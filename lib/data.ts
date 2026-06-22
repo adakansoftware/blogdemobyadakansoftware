@@ -1365,19 +1365,26 @@ export function searchArticles(query: string): Article[] {
   const q = normalize(query.trim())
   if (!q) return []
 
-  return articles.filter((article) => {
-    const haystack = [
-      article.title,
-      article.excerpt,
-      ...article.tags,
-      getCategory(article.categorySlug)?.name ?? '',
-      getAuthor(article.authorSlug)?.name ?? '',
-    ]
-      .join(' ')
-      .toLocaleLowerCase('tr')
+  return articles
+    .map((article) => {
+      let score = 0
+      const title = normalize(article.title)
+      const excerpt = normalize(article.excerpt)
+      const categoryName = normalize(getCategory(article.categorySlug)?.name ?? '')
+      const authorName = normalize(getAuthor(article.authorSlug)?.name ?? '')
+      const tags = article.tags.map((tag) => normalize(tag))
 
-    return normalize(haystack).includes(q)
-  })
+      if (title.includes(q)) score += 10
+      if (tags.some((tag) => tag === q)) score += 8
+      if (categoryName.includes(q)) score += 6
+      if (authorName.includes(q)) score += 5
+      if (excerpt.includes(q)) score += 3
+
+      return { article, score }
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((item) => item.article)
 }
 
 export function sortArticles(
