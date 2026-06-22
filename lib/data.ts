@@ -1344,6 +1344,26 @@ export function relatedArticles(article: Article, count = 3): Article[] {
     .slice(0, count)
 }
 
+export function getRelatedByTags(article: Article, count = 4): Article[] {
+  const articleTags = new Set(article.tags.map((tag) => normalize(tag)))
+
+  return articles
+    .filter((item) => item.id !== article.id)
+    .map((item) => ({
+      article: item,
+      sharedTagCount: item.tags.filter((tag) => articleTags.has(normalize(tag))).length,
+    }))
+    .filter((item) => item.sharedTagCount > 0)
+    .sort((a, b) => {
+      if (b.sharedTagCount !== a.sharedTagCount) {
+        return b.sharedTagCount - a.sharedTagCount
+      }
+      return b.article.views - a.article.views
+    })
+    .slice(0, count)
+    .map((item) => item.article)
+}
+
 export function authorArticleCount(slug: string): number {
   return articlesByAuthor(slug).length
 }
@@ -1431,6 +1451,21 @@ export function getEditorPicks(count = 6): Article[] {
 
 export function getReviewArticles(count = 6): Article[] {
   return articles.filter((article) => article.review).slice(0, count)
+}
+
+export function getPopularInCategory(
+  slug: string,
+  count = 3,
+  excludeId?: string,
+): Article[] {
+  return articles
+    .filter(
+      (article) =>
+        article.categorySlug === slug &&
+        (excludeId === undefined || article.id !== excludeId),
+    )
+    .sort((a, b) => b.views - a.views)
+    .slice(0, count)
 }
 
 export function formatViews(value: number): string {
