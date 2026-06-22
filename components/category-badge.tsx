@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { getCategory } from '@/lib/data'
+import { categoryPath } from '@/lib/routes'
 
 export function CategoryBadge({
   slug,
@@ -11,12 +12,12 @@ export function CategoryBadge({
   className?: string
   variant?: 'solid' | 'outline' | 'ghost'
 }) {
-  const cat = getCategory(slug)
-  if (!cat) return null
+  const category = getCategory(slug)
+  if (!category) return null
 
   return (
     <Link
-      href={`/kategori/${cat.slug}`}
+      href={categoryPath(category.slug)}
       className={cn(
         'inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider transition-colors',
         variant === 'solid' &&
@@ -27,7 +28,7 @@ export function CategoryBadge({
         className,
       )}
     >
-      {cat.name}
+      {category.name}
     </Link>
   )
 }

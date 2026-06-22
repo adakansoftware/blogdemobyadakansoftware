@@ -1,17 +1,26 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Clock } from 'lucide-react'
+import { Clock, MessageSquare, TrendingUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   type Article,
   formatDate,
+  formatViews,
   getAuthor,
   timeAgo,
 } from '@/lib/data'
+import { articlePath } from '@/lib/routes'
 import { CategoryBadge } from '@/components/category-badge'
 import { AuthorAvatar } from '@/components/author-avatar'
 
-type Variant = 'hero' | 'large' | 'standard' | 'compact' | 'list' | 'minimal'
+type Variant =
+  | 'hero'
+  | 'large'
+  | 'standard'
+  | 'compact'
+  | 'list'
+  | 'minimal'
+  | 'horizontal'
 
 export function ArticleCard({
   article,
@@ -25,7 +34,7 @@ export function ArticleCard({
   priority?: boolean
 }) {
   const author = getAuthor(article.authorSlug)
-  const href = `/makale/${article.slug}`
+  const href = articlePath(article.slug)
 
   if (variant === 'minimal') {
     return (
@@ -39,14 +48,12 @@ export function ArticleCard({
             {article.title}
           </Link>
         </h3>
-        <span className="text-xs text-muted-foreground">
-          {timeAgo(article.date)}
-        </span>
+        <span className="text-xs text-muted-foreground">{timeAgo(article.date)}</span>
       </article>
     )
   }
 
-  if (variant === 'list') {
+  if (variant === 'list' || variant === 'horizontal') {
     return (
       <article className={cn('group flex gap-4', className)}>
         <Link
@@ -61,8 +68,15 @@ export function ArticleCard({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </Link>
-        <div className="flex flex-col gap-1.5">
-          <CategoryBadge slug={article.categorySlug} variant="ghost" />
+        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <CategoryBadge slug={article.categorySlug} variant="ghost" />
+            {article.trending && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-wider text-accent">
+                <TrendingUp className="h-3 w-3" /> Trend
+              </span>
+            )}
+          </div>
           <h3 className="text-sm font-semibold leading-snug sm:text-base">
             <Link
               href={href}
@@ -71,10 +85,15 @@ export function ArticleCard({
               {article.title}
             </Link>
           </h3>
-          <div className="mt-auto flex items-center gap-2 text-xs text-muted-foreground">
+          <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+            {article.excerpt}
+          </p>
+          <div className="mt-auto flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             <span>{author?.name}</span>
             <span aria-hidden>·</span>
             <span>{timeAgo(article.date)}</span>
+            <span aria-hidden>·</span>
+            <span>{formatViews(article.views)} görüntülenme</span>
           </div>
         </div>
       </article>
@@ -105,7 +124,7 @@ export function ArticleCard({
             {article.title}
           </Link>
         </h3>
-        <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <span>{timeAgo(article.date)}</span>
           <span aria-hidden>·</span>
           <span className="inline-flex items-center gap-1">
@@ -116,18 +135,11 @@ export function ArticleCard({
     )
   }
 
-  // hero & large & standard share image + body layout
   const isHero = variant === 'hero'
   const isLarge = variant === 'large'
 
   return (
-    <article
-      className={cn(
-        'group flex flex-col',
-        isHero && 'gap-0',
-        className,
-      )}
-    >
+    <article className={cn('group flex flex-col', isHero && 'gap-0', className)}>
       <Link
         href={href}
         className={cn(
@@ -140,22 +152,31 @@ export function ArticleCard({
           alt={article.title}
           fill
           priority={priority}
-          sizes={isHero ? '(max-width: 1024px) 100vw, 66vw' : '(max-width: 768px) 100vw, 33vw'}
+          sizes={
+            isHero ? '(max-width: 1024px) 100vw, 66vw' : '(max-width: 768px) 100vw, 33vw'
+          }
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
         {isHero && (
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
         )}
         {isHero && (
-          <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 lg:p-10">
-            <CategoryBadge slug={article.categorySlug} />
+          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8 lg:p-10">
+            <div className="flex flex-wrap items-center gap-2">
+              <CategoryBadge slug={article.categorySlug} />
+              {article.trending && (
+                <span className="rounded-sm border border-white/20 bg-white/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-white">
+                  Gündem
+                </span>
+              )}
+            </div>
             <h2 className="mt-3 max-w-3xl text-balance font-heading text-2xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl">
-              <Link href={href}>{article.title}</Link>
+              {article.title}
             </h2>
             <p className="mt-3 max-w-2xl text-pretty text-sm leading-relaxed text-white/85 sm:text-base">
               {article.excerpt}
             </p>
-            <div className="mt-4 flex items-center gap-3 text-sm text-white/80">
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-white/80">
               <AuthorAvatar slug={article.authorSlug} size={32} />
               <span className="font-medium text-white">{author?.name}</span>
               <span aria-hidden>·</span>
@@ -178,10 +199,7 @@ export function ArticleCard({
               isLarge ? 'text-2xl sm:text-3xl' : 'text-lg sm:text-xl',
             )}
           >
-            <Link
-              href={href}
-              className="transition-colors group-hover:text-accent"
-            >
+            <Link href={href} className="transition-colors group-hover:text-accent">
               {article.title}
             </Link>
           </h3>
@@ -193,11 +211,15 @@ export function ArticleCard({
           >
             {article.excerpt}
           </p>
-          <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             <AuthorAvatar slug={article.authorSlug} size={24} />
             <span className="font-medium text-foreground">{author?.name}</span>
             <span aria-hidden>·</span>
             <span>{timeAgo(article.date)}</span>
+            <span aria-hidden>·</span>
+            <span className="inline-flex items-center gap-1">
+              <MessageSquare className="h-3 w-3" /> {article.commentCount}
+            </span>
           </div>
         </div>
       )}

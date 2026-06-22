@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Star } from 'lucide-react'
 import { type Article, getCategory } from '@/lib/data'
+import { articlePath } from '@/lib/routes'
 
 function ScoreBadge({ score }: { score: number }) {
   const tone =
@@ -10,6 +11,7 @@ function ScoreBadge({ score }: { score: number }) {
       : score >= 7.5
         ? 'bg-accent/15 text-accent'
         : 'bg-muted text-muted-foreground'
+
   return (
     <span
       className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-lg font-bold tabular-nums ${tone}`}
@@ -25,7 +27,7 @@ export function ReviewCard({ article }: { article: Article }) {
 
   return (
     <Link
-      href={`/makale/${article.slug}`}
+      href={articlePath(article.slug)}
       className="group flex gap-4 rounded-lg border border-border bg-card p-3 transition-colors hover:border-accent/40"
     >
       <div className="relative aspect-square w-24 shrink-0 overflow-hidden rounded-md sm:w-28">
@@ -45,15 +47,20 @@ export function ReviewCard({ article }: { article: Article }) {
           <h3 className="mt-1 line-clamp-2 font-heading text-base leading-snug text-card-foreground transition-colors group-hover:text-accent">
             {article.title}
           </h3>
+          {article.review?.verdict && (
+            <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+              {article.review.verdict}
+            </p>
+          )}
         </div>
-        <div className="mt-2 flex items-center gap-3">
+        <div className="mt-3 flex items-center gap-3">
           <ScoreBadge score={score} />
           <div className="flex items-center gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
+            {Array.from({ length: 5 }).map((_, index) => (
               <Star
-                key={i}
+                key={index}
                 className={`h-3.5 w-3.5 ${
-                  i < Math.round(score / 2)
+                  index < Math.round(score / 2)
                     ? 'fill-accent text-accent'
                     : 'text-muted-foreground/30'
                 }`}

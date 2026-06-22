@@ -7,20 +7,29 @@ export function SectionHeading({
   href,
   linkLabel = 'Tümünü Gör',
   accent = false,
+  kicker,
   className,
 }: {
   title: string
   href?: string
   linkLabel?: string
   accent?: boolean
+  kicker?: string
   className?: string
 }) {
   return (
     <div className={cn('mb-6 flex items-end justify-between gap-4', className)}>
-      <h2 className="flex items-center gap-3 font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
-        {accent && <span className="h-7 w-1.5 rounded-full bg-accent" />}
-        {title}
-      </h2>
+      <div>
+        {kicker && (
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            {kicker}
+          </p>
+        )}
+        <h2 className="flex items-center gap-3 font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
+          {accent && <span className="h-7 w-1.5 rounded-full bg-accent" />}
+          {title}
+        </h2>
+      </div>
       {href && (
         <Link
           href={href}

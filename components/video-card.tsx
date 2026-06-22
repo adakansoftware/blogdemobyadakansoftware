@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Play, Eye } from 'lucide-react'
+import { Eye, Play } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import type { Video } from '@/lib/data'
+import { formatDate, type Video } from '@/lib/data'
+import { sitePaths } from '@/lib/routes'
 
 export function VideoCard({
   video,
@@ -13,7 +14,7 @@ export function VideoCard({
 }) {
   return (
     <Link
-      href="/videolar"
+      href={sitePaths.videos}
       className="group block overflow-hidden rounded-lg border border-border bg-card"
     >
       <div className="relative aspect-video overflow-hidden">
@@ -46,8 +47,12 @@ export function VideoCard({
         >
           {video.title}
         </h3>
-        <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          {video.excerpt}
+        </p>
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
           <span>{video.author}</span>
+          <span>{formatDate(video.publishedAt)}</span>
           <span className="flex items-center gap-1">
             <Eye className="h-3.5 w-3.5" />
             {video.views} izlenme

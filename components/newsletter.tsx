@@ -14,8 +14,8 @@ export function Newsletter({
   const [submitted, setSubmitted] = useState(false)
   const [email, setEmail] = useState('')
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
     if (email.trim()) setSubmitted(true)
   }
 
@@ -25,11 +25,11 @@ export function Newsletter({
         <Mail className="h-6 w-6 text-accent" />
         <h3 className="mt-3 font-heading text-xl font-semibold">Bültene Abone Ol</h3>
         <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-          En önemli teknoloji haberlerini her sabah e-postanıza gönderelim.
+          En önemli teknoloji haberlerini her sabah e-posta kutunuza gönderelim.
         </p>
         {submitted ? (
           <p className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-accent">
-            <CheckCircle2 className="h-4 w-4" /> Teşekkürler, kaydınız alındı!
+            <CheckCircle2 className="h-4 w-4" /> Teşekkürler, kaydınız alındı.
           </p>
         ) : (
           <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-2">
@@ -37,7 +37,7 @@ export function Newsletter({
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               placeholder="ornek@eposta.com"
               className="h-11 rounded-lg border border-border bg-background px-4 text-sm outline-none focus:border-accent"
             />
@@ -60,15 +60,15 @@ export function Newsletter({
           <Mail className="h-3.5 w-3.5" /> TechNova Bülten
         </span>
         <h2 className="max-w-2xl text-balance font-heading text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
-          Teknoloji dünyasını kaçırmayın
+          Teknoloji gündemini kaçırmayın
         </h2>
         <p className="max-w-xl text-pretty leading-relaxed text-primary-foreground/70">
-          Haftada üç kez; en önemli haberler, derinlemesine incelemeler ve özel
-          analizlerle dolu bültenimize 120.000+ okuyucu ile birlikte katılın.
+          Haftada üç kez; öne çıkan haberler, derinlemesine incelemeler ve ekipten
+          seçkilerle hazırlanan bültenimize katılın.
         </p>
         {submitted ? (
           <p className="inline-flex items-center gap-2 text-lg font-medium">
-            <CheckCircle2 className="h-5 w-5" /> Aramıza hoş geldiniz!
+            <CheckCircle2 className="h-5 w-5" /> Aramıza hoş geldiniz
           </p>
         ) : (
           <form
@@ -79,7 +79,7 @@ export function Newsletter({
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               placeholder="E-posta adresiniz"
               className="h-12 flex-1 rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 px-4 text-sm text-primary-foreground placeholder:text-primary-foreground/50 outline-none focus:border-primary-foreground/50"
             />
@@ -92,7 +92,7 @@ export function Newsletter({
           </form>
         )}
         <p className="text-xs text-primary-foreground/50">
-          İstediğiniz zaman abonelikten çıkabilirsiniz. Gizliliğinize saygı duyuyoruz.
+          İstediğiniz zaman çıkabilirsiniz. Bu bölüm yalnızca demo amaçlı mock etkileşim kullanır.
         </p>
       </div>
     </section>

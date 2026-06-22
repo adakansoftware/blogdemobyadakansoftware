@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { TrendingUp } from 'lucide-react'
+import { MessageSquare, TrendingUp } from 'lucide-react'
 import { type Article, getAuthor, timeAgo } from '@/lib/data'
+import { articlePath } from '@/lib/routes'
 
 export function TrendingList({ articles }: { articles: Article[] }) {
   return (
@@ -10,25 +11,32 @@ export function TrendingList({ articles }: { articles: Article[] }) {
         <h2 className="font-heading text-xl font-semibold">Öne Çıkanlar</h2>
       </div>
       <ol className="divide-y divide-border">
-        {articles.map((article, i) => {
+        {articles.map((article, index) => {
           const author = getAuthor(article.authorSlug)
           return (
             <li key={article.id} className="group flex gap-4 px-5 py-4">
               <span className="font-heading text-3xl font-bold leading-none text-border transition-colors group-hover:text-accent">
-                {String(i + 1).padStart(2, '0')}
+                {String(index + 1).padStart(2, '0')}
               </span>
-              <div className="flex flex-col">
+              <div className="flex min-w-0 flex-1 flex-col">
                 <h3 className="text-sm font-semibold leading-snug">
                   <Link
-                    href={`/makale/${article.slug}`}
+                    href={articlePath(article.slug)}
                     className="line-clamp-2 transition-colors group-hover:text-accent"
                   >
                     {article.title}
                   </Link>
                 </h3>
-                <span className="mt-1 text-xs text-muted-foreground">
-                  {author?.name} · {timeAgo(article.date)}
-                </span>
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                  <span>{author?.name}</span>
+                  <span aria-hidden>·</span>
+                  <span>{timeAgo(article.date)}</span>
+                  <span aria-hidden>·</span>
+                  <span className="inline-flex items-center gap-1">
+                    <MessageSquare className="h-3 w-3" />
+                    {article.commentCount}
+                  </span>
+                </div>
               </div>
             </li>
           )
