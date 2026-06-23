@@ -159,8 +159,10 @@ export function SiteHeader() {
               <div
                 key={group.slug}
                 className="group relative"
+                aria-expanded={openGroup === group.slug}
                 onMouseEnter={() => setOpenGroup(group.slug)}
                 onMouseLeave={() => setOpenGroup((value) => (value === group.slug ? null : value))}
+                onKeyDown={(e) => e.key === 'Escape' && setOpenGroup(null)}
               >
                 <Link
                   href={href}
