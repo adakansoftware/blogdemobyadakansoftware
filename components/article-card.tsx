@@ -58,11 +58,13 @@ export function ArticleCard({
       <article className={cn('group flex gap-4', className)}>
         <Link
           href={href}
+          aria-label={article.title}
           className="relative aspect-[4/3] w-28 shrink-0 overflow-hidden rounded-md bg-muted sm:w-36"
         >
           <Image
             src={article.image || '/placeholder.svg'}
             alt={article.title}
+            aria-hidden={true}
             fill
             sizes="160px"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -105,11 +107,13 @@ export function ArticleCard({
       <article className={cn('group flex flex-col', className)}>
         <Link
           href={href}
+          aria-label={article.title}
           className="relative mb-3 aspect-[16/10] overflow-hidden rounded-lg bg-muted"
         >
           <Image
             src={article.image || '/placeholder.svg'}
             alt={article.title}
+            aria-hidden={true}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -142,6 +146,7 @@ export function ArticleCard({
     <article className={cn('group flex flex-col', isHero && 'gap-0', className)}>
       <Link
         href={href}
+        aria-label={!isHero ? article.title : undefined}
         className={cn(
           'relative overflow-hidden rounded-xl bg-muted',
           isHero ? 'aspect-[16/10] lg:aspect-[16/9]' : 'aspect-[16/10]',
@@ -150,6 +155,7 @@ export function ArticleCard({
         <Image
           src={article.image || '/placeholder.svg'}
           alt={article.title}
+          aria-hidden={!isHero ? true : undefined}
           fill
           priority={priority}
           sizes={
