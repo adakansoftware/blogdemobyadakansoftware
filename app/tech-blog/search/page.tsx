@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { SearchX } from 'lucide-react'
-import { paginate, searchArticles, sortArticles } from '@/lib/data'
+import { paginate, searchArticles, sortArticles, trendingTopics } from '@/lib/data'
 import { sitePaths } from '@/lib/routes'
 import { ArticleCard } from '@/components/article-card'
 import { PaginationLinks } from '@/components/pagination-links'
@@ -41,16 +41,16 @@ export default async function SearchPage({
             Arama
           </p>
           <h1 className="mt-3 font-heading text-4xl font-semibold sm:text-5xl">
-            {query ? `“${query}” için sonuçlar` : 'Makale ve etiket ara'}
+            {query ? `â€œ${query}â€ iÃ§in sonuÃ§lar` : 'Makale ve etiket ara'}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Arama deneyimi mock veri üzerinde çalışır ve haberler, etiketler, yazarlar ile kategori isimlerinde eşleşme yapar.
+            Arama deneyimi mock veri Ã¼zerinde Ã§alÄ±ÅŸÄ±r ve haberler, etiketler, yazarlar ile kategori isimlerinde eÅŸleÅŸme yapar.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {[
               { label: 'En Yeni', value: 'latest' },
-              { label: 'En Çok Okunan', value: 'popular' },
-              { label: 'En Çok Yorumlanan', value: 'commented' },
+              { label: 'En Ã‡ok Okunan', value: 'popular' },
+              { label: 'En Ã‡ok Yorumlanan', value: 'commented' },
             ].map((option) => (
               <Link
                 key={option.value}
@@ -72,8 +72,8 @@ export default async function SearchPage({
         {query && paged.items.length > 0 && (
           <>
             <SectionHeading
-              title={`${results.length} sonuç bulundu`}
-              kicker="Sonuçlar"
+              title={`${results.length} sonuÃ§ bulundu`}
+              kicker="SonuÃ§lar"
               className="mb-8"
             />
             <div className="grid gap-5">
@@ -93,11 +93,11 @@ export default async function SearchPage({
           <div className="rounded-2xl border border-dashed border-border bg-muted/30 px-6 py-16 text-center">
             <SearchX className="mx-auto h-10 w-10 text-muted-foreground" />
             <h2 className="mt-4 font-heading text-2xl font-semibold">
-              {query ? 'Sonuç bulunamadı' : 'Arama yapmak için bir konu yazın'}
+              {query ? `"${query}" için sonuç bulunamadı` : 'Arama yapmak için bir konu yazın'}
             </h2>
             <p className="mt-3 text-muted-foreground">
               {query
-                ? 'Farklı bir anahtar kelime, kategori ya da etiket deneyebilirsiniz.'
+                ? `"${trendingTopics[0]}" aramayı deneyin`
                 : 'Örneğin: yapay zeka, OLED monitör, TypeScript veya espor'}
             </p>
           </div>
