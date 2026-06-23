@@ -933,6 +933,9 @@ const seeds: Seed[] = [
   },
 ]
 
+/**
+ * Intentionally hardcoded to keep demo content dates stable across environments and reruns.
+ */
 function daysAgoISO(days: number): string {
   const d = new Date('2026-06-22T10:00:00')
   d.setDate(d.getDate() - days)
