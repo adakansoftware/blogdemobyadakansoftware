@@ -79,8 +79,13 @@ export default async function ArticleDetailPage({
                   </p>
                   <ul className="mt-4 space-y-3 text-sm">
                     {body.toc.map((item) => (
-                      <li key={item} className="text-muted-foreground">
-                        {item}
+                      <li key={item.id} className="text-muted-foreground">
+                        <a
+                          href={`#${item.id}`}
+                          className="transition-colors hover:text-accent"
+                        >
+                          {item.label}
+                        </a>
                       </li>
                     ))}
                   </ul>
