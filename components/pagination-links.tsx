@@ -16,6 +16,7 @@ export function PaginationLinks({
     <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
       <Link
         href={buildHref(Math.max(1, page - 1))}
+        aria-label={`Sayfa ${Math.max(1, page - 1)}'e git`}
         className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
           page <= 1
             ? 'pointer-events-none border-border text-muted-foreground/50'
@@ -24,11 +25,12 @@ export function PaginationLinks({
       >
         <ChevronLeft className="h-4 w-4" /> Önceki
       </Link>
-      <p className="text-sm text-muted-foreground">
+      <p role="status" aria-live="polite" className="text-sm text-muted-foreground">
         Sayfa {page} / {totalPages}
       </p>
       <Link
         href={buildHref(Math.min(totalPages, page + 1))}
+        aria-label={`Sayfa ${Math.min(totalPages, page + 1)}'e git`}
         className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
           page >= totalPages
             ? 'pointer-events-none border-border text-muted-foreground/50'
