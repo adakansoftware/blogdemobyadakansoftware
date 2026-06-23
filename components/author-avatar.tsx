@@ -24,7 +24,7 @@ export function AuthorAvatar({
 
   return (
     <span
-      aria-hidden
+      aria-label={author.name}
       className={cn(
         'inline-flex shrink-0 items-center justify-center rounded-full font-heading font-semibold text-white',
         className,
