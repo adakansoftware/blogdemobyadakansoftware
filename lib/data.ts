@@ -89,6 +89,11 @@ export type NavGroup = {
   subcategories: string[]
 }
 
+export type ArticleBodySection = {
+  label: string
+  id: string
+}
+
 export const categories: Category[] = [
   {
     slug: 'teknoloji',
@@ -1505,9 +1510,12 @@ export function timeAgo(iso: string): string {
   return `${weeks} hafta önce`
 }
 
-export function articleBody(article: Article): { toc: string[]; html: string } {
+export function articleBody(article: Article): {
+  toc: ArticleBodySection[]
+  html: string
+} {
   const categoryName = getCategory(article.categorySlug)?.name ?? 'Teknoloji'
-  const toc = [
+  const headings = [
     'Genel Bakış',
     'Öne Çıkan Noktalar',
     'Detaylar',
@@ -1515,7 +1523,7 @@ export function articleBody(article: Article): { toc: string[]; html: string } {
     'Sonuç',
   ]
 
-  const html = `
+  const baseHtml = `
 <p>${article.excerpt} ${categoryName} odağında hızlanan dönüşüm, kullanıcı deneyiminden yatırım kararlarına kadar geniş bir alanı etkilemeye devam ediyor. Bu içerikte gelişmenin teknik tarafını, pratik etkilerini ve pazar karşılığını birlikte değerlendiriyoruz.</p>
 <h2>Genel Bakış</h2>
 <p>Son dönemde gelen duyurular, ürünlerin yalnızca daha güçlü hale gelmediğini; aynı zamanda daha verimli, daha erişilebilir ve daha bütüncül deneyimler sunduğunu gösteriyor. TechNova Journal olarak konuştuğumuz uzmanlar, bu değişimin birkaç çeyrek boyunca etkisini sürdüreceği görüşünde birleşiyor.</p>
@@ -1533,6 +1541,13 @@ export function articleBody(article: Article): { toc: string[]; html: string } {
 <h2>Sonuç</h2>
 <p>Özetle ${categoryName.toLocaleLowerCase('tr')} eksenindeki bu gelişme, teknolojinin nereye gittiğine dair güçlü bir işaret veriyor. TechNova Journal, konuyu hem haber hem analiz hem de pratik rehber boyutuyla izlemeyi sürdürecek.</p>
 `
+
+  const toc: ArticleBodySection[] = []
+  const html = baseHtml.replace(/<h2>(.*?)<\/h2>/g, (_match, label: string) => {
+    const id = slugify(label)
+    toc.push({ label, id })
+    return `<h2 id="${id}">${label}</h2>`
+  })
 
   return { toc, html }
 }
