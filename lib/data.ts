@@ -1466,12 +1466,13 @@ export function getPopularInCategory(
   count = 3,
   excludeId?: string,
 ): Article[] {
-  return articles
-    .filter(
-      (article) =>
-        article.categorySlug === slug &&
-        (excludeId === undefined || article.id !== excludeId),
-    )
+  const categoryArticles = articles.filter(
+    (article) =>
+      article.categorySlug === slug &&
+      (excludeId === undefined || article.id !== excludeId),
+  )
+
+  return categoryArticles
     .sort((a, b) => b.views - a.views)
     .slice(0, count)
 }
