@@ -35,11 +35,11 @@ const sections = [
 ]
 
 const socials = [
-  { label: 'X' },
-  { label: 'IG' },
-  { label: 'YT' },
-  { label: 'IN' },
-  { label: 'GH' },
+  { label: 'X', href: 'https://x.com/technovajournal' },
+  { label: 'IG', href: 'https://instagram.com/technovajournal' },
+  { label: 'YT', href: 'https://youtube.com/@technovajournal' },
+  { label: 'IN', href: 'https://linkedin.com/company/technovajournal' },
+  { label: 'GH', href: 'https://github.com/adakansoftware' },
 ]
 
 export function SiteFooter() {
@@ -63,7 +63,9 @@ export function SiteFooter() {
               {socials.map((social) => (
                 <a
                   key={social.label}
-                  href="#"
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={social.label}
                   className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-accent hover:text-accent"
                 >
