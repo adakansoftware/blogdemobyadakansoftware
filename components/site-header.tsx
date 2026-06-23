@@ -166,6 +166,8 @@ export function SiteHeader() {
               >
                 <Link
                   href={href}
+                  onFocus={() => setOpenGroup(group.slug)}
+                  onBlur={() => setOpenGroup(null)}
                   className={cn(
                     'relative inline-flex items-center gap-1 px-3 py-3 text-sm font-medium transition-colors hover:text-accent',
                     active ? 'text-accent' : 'text-foreground',
