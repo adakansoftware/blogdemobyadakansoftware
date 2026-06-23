@@ -13,10 +13,21 @@ export function Newsletter({
 }) {
   const [submitted, setSubmitted] = useState(false)
   const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
+
+  function handleEmailChange(value: string) {
+    setEmail(value)
+    if (error) setError('')
+  }
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
-    if (email.trim()) setSubmitted(true)
+    const trimmedEmail = email.trim()
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError('Geçerli bir e-posta adresi girin.')
+      return
+    }
+    setSubmitted(true)
   }
 
   if (variant === 'inline') {
@@ -37,10 +48,11 @@ export function Newsletter({
               type="email"
               required
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => handleEmailChange(event.target.value)}
               placeholder="ornek@eposta.com"
               className="h-11 rounded-lg border border-border bg-background px-4 text-sm outline-none focus:border-accent"
             />
+            {error && <p className="text-xs text-destructive mt-1">{error}</p>}
             <button
               type="submit"
               className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-accent px-4 text-sm font-semibold text-accent-foreground transition-opacity hover:opacity-90"
@@ -79,7 +91,7 @@ export function Newsletter({
               type="email"
               required
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => handleEmailChange(event.target.value)}
               placeholder="E-posta adresiniz"
               className="h-12 flex-1 rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 px-4 text-sm text-primary-foreground placeholder:text-primary-foreground/50 outline-none focus:border-primary-foreground/50"
             />
@@ -91,6 +103,7 @@ export function Newsletter({
             </button>
           </form>
         )}
+        {error && <p className="text-xs text-destructive mt-1">{error}</p>}
         <p className="text-xs text-primary-foreground/50">
           İstediğiniz zaman çıkabilirsiniz. Bu bölüm yalnızca demo amaçlı mock etkileşim kullanır.
         </p>
