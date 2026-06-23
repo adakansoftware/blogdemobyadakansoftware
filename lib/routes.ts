@@ -13,3 +13,11 @@ export function articlePath(slug: string) {
 export function categoryPath(slug: string) {
   return `/tech-blog/category/${slug}`
 }
+
+export function forumThreadPath(slug: string) {
+  return `/tech-blog/forum-preview#${slug}`
+}
+
+export function videoPath(slug: string) {
+  return `/tech-blog/videos#${slug}`
+}

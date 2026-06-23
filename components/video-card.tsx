@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Eye, Play } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { formatDate, type Video } from '@/lib/data'
-import { sitePaths } from '@/lib/routes'
+import { videoPath } from '@/lib/routes'
 
 export function VideoCard({
   video,
@@ -14,7 +14,7 @@ export function VideoCard({
 }) {
   return (
     <Link
-      href={sitePaths.videos}
+      href={videoPath(video.slug)}
       className="group block overflow-hidden rounded-lg border border-border bg-card"
     >
       <div className="relative aspect-video overflow-hidden">
