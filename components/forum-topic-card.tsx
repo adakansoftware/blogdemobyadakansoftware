@@ -1,5 +1,7 @@
+import Link from 'next/link'
 import { CheckCircle2, MessageSquareText, Pin, Timer } from 'lucide-react'
 import { type ForumThread } from '@/lib/data'
+import { forumThreadPath } from '@/lib/routes'
 
 export function ForumTopicCard({
   thread,
@@ -28,7 +30,16 @@ export function ForumTopicCard({
         )}
       </div>
       <h3 className="mt-3 font-heading text-lg font-semibold leading-snug">
-        {thread.title}
+        {thread.slug ? (
+          <Link
+            href={forumThreadPath(thread.slug)}
+            className="transition-colors hover:text-accent"
+          >
+            {thread.title}
+          </Link>
+        ) : (
+          thread.title
+        )}
       </h3>
       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <span>{thread.category}</span>

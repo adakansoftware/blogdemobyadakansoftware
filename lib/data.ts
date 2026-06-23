@@ -56,6 +56,7 @@ export type Video = {
 
 export type ForumThread = {
   id: string
+  slug?: string
   title: string
   category: string
   author: string
@@ -1148,6 +1149,7 @@ export const videos: Video[] = [
 export const forumThreads: ForumThread[] = [
   {
     id: 'thread-1',
+    slug: 'thread-1',
     title: 'Yeni nesil ekran kartı almak için yaz sonunu beklemek mantıklı mı?',
     category: 'Donanım',
     author: 'tekno_meraklisi',
@@ -1161,6 +1163,7 @@ export const forumThreads: ForumThread[] = [
   },
   {
     id: 'thread-2',
+    slug: 'thread-2',
     title: 'Yapay zeka ile kod yazarken hangi görevlerde gerçekten zaman kazanıyorsunuz?',
     category: 'Yazılım',
     author: 'kod_ustasi',
@@ -1173,6 +1176,7 @@ export const forumThreads: ForumThread[] = [
   },
   {
     id: 'thread-3',
+    slug: 'thread-3',
     title: 'Bütçe dostu mekanik klavye önerileri: yazı ve oyun için ortak model arıyorum',
     category: 'Donanım',
     author: 'klavye_tutkunu',
@@ -1186,6 +1190,7 @@ export const forumThreads: ForumThread[] = [
   },
   {
     id: 'thread-4',
+    slug: 'thread-4',
     title: 'Hangi Linux dağıtımı yeni başlayanlar için daha az sürpriz çıkarıyor?',
     category: 'Yazılım',
     author: 'linux_yolcusu',
@@ -1200,6 +1205,7 @@ export const forumThreads: ForumThread[] = [
   },
   {
     id: 'thread-5',
+    slug: 'thread-5',
     title: 'Amiral gemisi telefonlarda kamera kararlılığı mı ham kalite mi daha önemli?',
     category: 'Mobil',
     author: 'foto_avcisi',
@@ -1212,6 +1218,7 @@ export const forumThreads: ForumThread[] = [
   },
   {
     id: 'thread-6',
+    slug: 'thread-6',
     title: 'Espor kariyerine başlamak isteyen biri hangi alışkanlıkları önce oturtmalı?',
     category: 'Oyun',
     author: 'rekabetci_oyuncu',
@@ -1225,6 +1232,7 @@ export const forumThreads: ForumThread[] = [
   },
   {
     id: 'thread-7',
+    slug: 'thread-7',
     title: 'Ev için NAS kurulumunda sessizlik mi yedeklilik mi öncelikli olmalı?',
     category: 'Donanım',
     author: 'veri_koruyucu',
@@ -1237,6 +1245,7 @@ export const forumThreads: ForumThread[] = [
   },
   {
     id: 'thread-8',
+    slug: 'thread-8',
     title: 'Yerel çalışan dil modelleri gündelik kullanımda gerçekten yeterli mi?',
     category: 'Yapay Zeka',
     author: 'ai_arastirmaci',
@@ -1250,6 +1259,7 @@ export const forumThreads: ForumThread[] = [
   },
   {
     id: 'thread-9',
+    slug: 'thread-9',
     title: 'Bulut maliyeti kontrolden çıkmadan ekip içinde görünürlük nasıl sağlanır?',
     category: 'Yazılım',
     author: 'cloud_yolcusu',
@@ -1263,6 +1273,7 @@ export const forumThreads: ForumThread[] = [
   },
   {
     id: 'thread-10',
+    slug: 'thread-10',
     title: 'OLED monitörde yanma riskini azaltmak için günlük kullanımda ne yapıyorsunuz?',
     category: 'Donanım',
     author: 'pikselavcisi',
