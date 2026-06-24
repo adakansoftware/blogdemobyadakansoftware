@@ -1,9 +1,15 @@
+import type { Metadata } from 'next'
 import { ArrowUpRight } from 'lucide-react'
 import { articlesByAuthor, authorArticleCount, authors } from '@/lib/data'
 import { ArticleCard } from '@/components/article-card'
 import { AuthorAvatar } from '@/components/author-avatar'
 import { SectionHeading } from '@/components/section-heading'
 import { SiteShell } from '@/components/site-shell'
+
+export const metadata: Metadata = {
+  title: 'Yazarlar | TechNova Journal',
+  description: 'TechNova Journal editör kadrosu.',
+}
 
 export default function AuthorsPage() {
   return (

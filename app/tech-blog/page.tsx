@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Flame, MessageSquare, Trophy } from 'lucide-react'
 import {
@@ -25,6 +26,11 @@ import { ReviewCard } from '@/components/review-card'
 import { SectionHeading } from '@/components/section-heading'
 import { SiteShell } from '@/components/site-shell'
 import { VideoCard } from '@/components/video-card'
+
+export const metadata: Metadata = {
+  title: 'Anasayfa | TechNova Journal',
+  description: 'Teknoloji, yapay zeka ve dijital dünyanın son haberleri.',
+}
 
 export default function TechBlogHomePage() {
   const featured = articles.filter((article) => article.featured)

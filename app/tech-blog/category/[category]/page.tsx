@@ -1,6 +1,15 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { articlesByCategory, getCategory, paginate, sortArticles } from '@/lib/data'
+import {
+  articlesByCategory,
+  categories,
+  getCategory,
+  paginate,
+  sortArticles,
+  type SortOption,
+  validSorts,
+} from '@/lib/data'
 import { categoryPath } from '@/lib/routes'
 import { ArticleCard } from '@/components/article-card'
 import { PaginationLinks } from '@/components/pagination-links'
@@ -9,7 +18,25 @@ import { SiteShell } from '@/components/site-shell'
 
 type SearchParams = {
   page?: string
-  sort?: 'latest' | 'popular' | 'commented'
+  sort?: SortOption
+}
+
+export function generateStaticParams() {
+  return categories.map((cat) => ({ category: cat.slug }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>
+}): Promise<Metadata> {
+  const { category } = await params
+  const cat = getCategory(category)
+  if (!cat) return {}
+  return {
+    title: `${cat.name} | TechNova Journal`,
+    description: cat.description,
+  }
 }
 
 export default async function CategoryPage({
@@ -25,7 +52,9 @@ export default async function CategoryPage({
   if (!categoryItem) notFound()
   const currentCategory = categoryItem
 
-  const sort = resolvedSearchParams.sort ?? 'latest'
+  const sort = (validSorts.includes(resolvedSearchParams.sort as SortOption)
+    ? resolvedSearchParams.sort
+    : 'latest') as SortOption
   const page = Number(resolvedSearchParams.page ?? '1')
   const items = sortArticles(articlesByCategory(currentCategory.slug), sort)
   const { items: pagedItems, totalPages, page: currentPage } = paginate(items, page, 8)

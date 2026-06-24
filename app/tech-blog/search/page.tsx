@@ -1,6 +1,14 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SearchX } from 'lucide-react'
-import { paginate, searchArticles, sortArticles, trendingTopics } from '@/lib/data'
+import {
+  paginate,
+  searchArticles,
+  sortArticles,
+  trendingTopics,
+  type SortOption,
+  validSorts,
+} from '@/lib/data'
 import { sitePaths } from '@/lib/routes'
 import { ArticleCard } from '@/components/article-card'
 import { PaginationLinks } from '@/components/pagination-links'
@@ -10,7 +18,11 @@ import { SiteShell } from '@/components/site-shell'
 type SearchParams = {
   q?: string
   page?: string
-  sort?: 'latest' | 'popular' | 'commented'
+  sort?: SortOption
+}
+
+export const metadata: Metadata = {
+  title: 'Arama | TechNova Journal',
 }
 
 export default async function SearchPage({
@@ -20,7 +32,9 @@ export default async function SearchPage({
 }) {
   const resolvedSearchParams = await searchParams
   const query = resolvedSearchParams.q ?? ''
-  const sort = resolvedSearchParams.sort ?? 'latest'
+  const sort = (validSorts.includes(resolvedSearchParams.sort as SortOption)
+    ? resolvedSearchParams.sort
+    : 'latest') as SortOption
   const page = Number(resolvedSearchParams.page ?? '1')
   const results = sortArticles(searchArticles(query), sort)
   const paged = paginate(results, page, 10)

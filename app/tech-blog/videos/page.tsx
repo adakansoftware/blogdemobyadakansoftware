@@ -1,7 +1,12 @@
+import type { Metadata } from 'next'
 import { videos } from '@/lib/data'
 import { SectionHeading } from '@/components/section-heading'
 import { SiteShell } from '@/components/site-shell'
 import { VideoCard } from '@/components/video-card'
+
+export const metadata: Metadata = {
+  title: 'Videolar | TechNova Journal',
+}
 
 export default function VideosPage() {
   const [featured, ...rest] = videos

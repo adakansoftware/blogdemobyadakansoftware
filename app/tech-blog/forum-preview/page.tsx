@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import {
   activeMembers,
   forumStats,
@@ -7,6 +8,10 @@ import {
 import { ForumTopicCard } from '@/components/forum-topic-card'
 import { SectionHeading } from '@/components/section-heading'
 import { SiteShell } from '@/components/site-shell'
+
+export const metadata: Metadata = {
+  title: 'Forum | TechNova Journal',
+}
 
 export default function ForumPreviewPage() {
   const latestThreads = forumThreads.slice(0, 4)

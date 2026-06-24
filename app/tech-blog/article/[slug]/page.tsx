@@ -1,8 +1,10 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { MessageSquare, Quote, Timer } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import {
   articleBody,
+  articles,
   comments,
   formatDate,
   getArticle,
@@ -17,6 +19,24 @@ import { CategoryBadge } from '@/components/category-badge'
 import { Newsletter } from '@/components/newsletter'
 import { SectionHeading } from '@/components/section-heading'
 import { SiteShell } from '@/components/site-shell'
+
+export function generateStaticParams() {
+  return articles.map((article) => ({ slug: article.slug }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const article = getArticle(slug)
+  if (!article) return {}
+  return {
+    title: `${article.title} | TechNova Journal`,
+    description: article.excerpt,
+  }
+}
 
 export default async function ArticleDetailPage({
   params,
