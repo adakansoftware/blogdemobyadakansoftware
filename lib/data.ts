@@ -90,10 +90,13 @@ export type NavGroup = {
   subcategories: string[]
 }
 
-export type ArticleBodySection = {
+export type TocItem = {
   label: string
   id: string
 }
+
+export const validSorts = ['latest', 'popular', 'commented'] as const
+export type SortOption = (typeof validSorts)[number]
 
 export const categories: Category[] = [
   {
@@ -1401,23 +1404,28 @@ function normalize(input: string): string {
 }
 
 export function searchArticles(query: string): Article[] {
-  const q = normalize(query.trim())
-  if (!q) return []
+  const normalizedQuery = normalize(query.trim())
+  if (!normalizedQuery) return []
+  const tokens = normalizedQuery.split(/\s+/).filter(Boolean)
 
   return articles
     .map((article) => {
       let score = 0
       const title = normalize(article.title)
+      const titleWords = title.split(/\s+/)
       const excerpt = normalize(article.excerpt)
       const categoryName = normalize(getCategory(article.categorySlug)?.name ?? '')
       const authorName = normalize(getAuthor(article.authorSlug)?.name ?? '')
       const tags = article.tags.map((tag) => normalize(tag))
 
-      if (title.includes(q)) score += 10
-      if (tags.some((tag) => tag === q)) score += 8
-      if (categoryName.includes(q)) score += 6
-      if (authorName.includes(q)) score += 5
-      if (excerpt.includes(q)) score += 3
+      for (const token of tokens) {
+        if (titleWords.includes(token)) score += 10
+        else if (title.includes(token)) score += 6
+        score += tags.filter((tag) => tag === token).length * 8
+        if (categoryName.includes(token)) score += 5
+        if (authorName.includes(token)) score += 4
+        if (excerpt.includes(token)) score += 3
+      }
 
       return { article, score }
     })
@@ -1428,7 +1436,7 @@ export function searchArticles(query: string): Article[] {
 
 export function sortArticles(
   items: Article[],
-  sort: 'latest' | 'popular' | 'commented' = 'latest',
+  sort: SortOption = 'latest',
 ): Article[] {
   const copy = [...items]
   if (sort === 'popular') {
@@ -1510,12 +1518,14 @@ export function formatDate(iso: string): string {
     'Aralık',
   ]
   const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return '—'
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
 }
 
 export function timeAgo(iso: string): string {
   const now = new Date('2026-06-22T18:00:00').getTime()
   const then = new Date(iso).getTime()
+  if (Number.isNaN(then)) return 'Bilinmiyor'
   const diffHours = Math.round((now - then) / 36e5)
   if (diffHours < 1) return 'az önce'
   if (diffHours < 24) return `${diffHours} saat önce`
@@ -1526,7 +1536,7 @@ export function timeAgo(iso: string): string {
 }
 
 export function articleBody(article: Article): {
-  toc: ArticleBodySection[]
+  toc: TocItem[]
   html: string
 } {
   const categoryName = getCategory(article.categorySlug)?.name ?? 'Teknoloji'
@@ -1557,7 +1567,7 @@ export function articleBody(article: Article): {
 <p>Özetle ${categoryName.toLocaleLowerCase('tr')} eksenindeki bu gelişme, teknolojinin nereye gittiğine dair güçlü bir işaret veriyor. TechNova Journal, konuyu hem haber hem analiz hem de pratik rehber boyutuyla izlemeyi sürdürecek.</p>
 `
 
-  const toc: ArticleBodySection[] = []
+  const toc: TocItem[] = []
   const html = baseHtml.replace(/<h2>(.*?)<\/h2>/g, (_match, label: string) => {
     const id = slugify(label)
     toc.push({ label, id })
