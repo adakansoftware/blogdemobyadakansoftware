@@ -67,12 +67,22 @@ export default function AuthorsPage() {
                   </div>
                 </div>
                 <div className="mt-6 flex flex-wrap gap-4 text-sm text-muted-foreground">
-                  <span className="inline-flex items-center gap-1">
+                  <a
+                    href={`https://x.com/${author.twitter.replace('@', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 transition-colors hover:text-accent"
+                  >
                     X {author.twitter}
-                  </span>
-                  <span className="inline-flex items-center gap-1">
+                  </a>
+                  <a
+                    href={`https://linkedin.com/in/${author.linkedin}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 transition-colors hover:text-accent"
+                  >
                     LinkedIn <ArrowUpRight className="h-3.5 w-3.5" />
-                  </span>
+                  </a>
                 </div>
               </article>
             )
