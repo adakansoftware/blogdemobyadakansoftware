@@ -947,7 +947,7 @@ function daysAgoISO(days: number): string {
   return d.toISOString()
 }
 
-function slugify(input: string): string {
+export function slugify(input: string): string {
   return input
     .toLocaleLowerCase('tr')
     .normalize('NFD')
