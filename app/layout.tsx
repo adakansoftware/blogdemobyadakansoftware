@@ -21,6 +21,21 @@ export const metadata: Metadata = {
   description:
     'TechNova Journal; yapay zeka, yazılım, donanım, mobil, oyun ve siber güvenlik alanlarında derinlemesine haberler, incelemeler ve rehberler sunan premium teknoloji yayını.',
   generator: 'v0.app',
+  openGraph: {
+    title: 'TechNova Journal — Teknoloji, Yapay Zeka ve Dijital Dünya',
+    description:
+      'TechNova Journal; yapay zeka, yazılım, donanım, mobil, oyun ve siber güvenlik alanlarında derinlemesine haberler.',
+    url: 'https://technova.example.com',
+    siteName: 'TechNova Journal',
+    locale: 'tr_TR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TechNova Journal',
+    description: "Türkiye'nin bağımsız teknoloji yayını.",
+    site: '@technovajournal',
+  },
   icons: {
     icon: [
       { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
