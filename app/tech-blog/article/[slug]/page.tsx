@@ -36,6 +36,13 @@ export async function generateMetadata({
   return {
     title: `${article.title} | TechNova Journal`,
     description: article.excerpt,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      images: [{ url: article.image }],
+      type: 'article',
+      publishedTime: article.date,
+    },
   }
 }
 
