@@ -55,16 +55,17 @@ export default async function SearchPage({
             Arama
           </p>
           <h1 className="mt-3 font-heading text-4xl font-semibold sm:text-5xl">
-            {query ? `â€œ${query}â€ iÃ§in sonuÃ§lar` : 'Makale ve etiket ara'}
+            {query ? `"${query}" için sonuçlar` : 'Makale ve etiket ara'}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Arama deneyimi mock veri Ã¼zerinde Ã§alÄ±ÅŸÄ±r ve haberler, etiketler, yazarlar ile kategori isimlerinde eÅŸleÅŸme yapar.
+            Arama deneyimi mock veri üzerinde çalışır ve haberler, etiketler,
+            yazarlar ile kategori isimlerinde eşleşme yapar.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {[
               { label: 'En Yeni', value: 'latest' },
-              { label: 'En Ã‡ok Okunan', value: 'popular' },
-              { label: 'En Ã‡ok Yorumlanan', value: 'commented' },
+              { label: 'En Çok Okunan', value: 'popular' },
+              { label: 'En Çok Yorumlanan', value: 'commented' },
             ].map((option) => (
               <Link
                 key={option.value}
@@ -86,8 +87,8 @@ export default async function SearchPage({
         {query && paged.items.length > 0 && (
           <>
             <SectionHeading
-              title={`${results.length} sonuÃ§ bulundu`}
-              kicker="SonuÃ§lar"
+              title={`${results.length} sonuç bulundu`}
+              kicker="Sonuçlar"
               className="mb-8"
             />
             <div className="grid gap-5">
