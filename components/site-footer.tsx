@@ -100,7 +100,14 @@ export function SiteFooter() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
           <p>© 2026 TechNova Journal. Tüm hakları saklıdır.</p>
-          <p>İstanbul, Türkiye · Bağımsız teknoloji yayıncılığı</p>
+          <a
+            href="https://instagram.com/adakansoftware"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-accent"
+          >
+            Design by Adakan Software
+          </a>
         </div>
       </div>
     </footer>
