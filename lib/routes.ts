@@ -6,6 +6,15 @@ export const sitePaths = {
   forum: '/tech-blog/forum-preview',
 }
 
+export const adminPaths = {
+  home: '/admin',
+  articles: '/admin/articles',
+  newArticle: '/admin/articles/new',
+  videos: '/admin/videos',
+  newVideo: '/admin/videos/new',
+  settings: '/admin/settings',
+}
+
 export function articlePath(slug: string) {
   return `/tech-blog/article/${slug}`
 }
