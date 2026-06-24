@@ -1503,36 +1503,36 @@ export function formatViews(value: number): string {
 }
 
 export function formatDate(iso: string): string {
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return '?'
   const months = [
     'Ocak',
-    'Şubat',
+    '?ubat',
     'Mart',
     'Nisan',
-    'Mayıs',
+    'May?s',
     'Haziran',
     'Temmuz',
-    'Ağustos',
-    'Eylül',
+    'A?ustos',
+    'Eyl?l',
     'Ekim',
-    'Kasım',
-    'Aralık',
+    'Kas?m',
+    'Aral?k',
   ]
-  const date = new Date(iso)
-  if (Number.isNaN(date.getTime())) return '—'
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
 }
 
 export function timeAgo(iso: string): string {
-  const now = new Date('2026-06-22T18:00:00').getTime()
   const then = new Date(iso).getTime()
   if (Number.isNaN(then)) return 'Bilinmiyor'
+  const now = new Date('2026-06-22T18:00:00').getTime()
   const diffHours = Math.round((now - then) / 36e5)
-  if (diffHours < 1) return 'az önce'
-  if (diffHours < 24) return `${diffHours} saat önce`
+  if (diffHours < 1) return 'az ?nce'
+  if (diffHours < 24) return `${diffHours} saat ?nce`
   const days = Math.round(diffHours / 24)
-  if (days < 7) return `${days} gün önce`
+  if (days < 7) return `${days} g?n ?nce`
   const weeks = Math.round(days / 7)
-  return `${weeks} hafta önce`
+  return `${weeks} hafta ?nce`
 }
 
 export function articleBody(article: Article): {
