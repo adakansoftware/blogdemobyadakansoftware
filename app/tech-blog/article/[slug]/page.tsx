@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { MessageSquare, Quote, Timer } from 'lucide-react'
 import { notFound } from 'next/navigation'
@@ -85,11 +86,16 @@ export default async function ArticleDetailPage({
         <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_320px]">
           <div>
             <div className="overflow-hidden rounded-2xl border border-border">
-              <img
-                src={article.image}
-                alt={article.title}
-                className="h-auto w-full object-cover"
-              />
+              <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
+                <Image
+                  src={article.image}
+                  alt={article.title}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 1024px"
+                  className="object-cover"
+                />
+              </div>
             </div>
             <div className="mt-8 grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)]">
               <aside className="space-y-6">
