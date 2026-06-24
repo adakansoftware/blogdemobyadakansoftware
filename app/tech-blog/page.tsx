@@ -25,6 +25,7 @@ import { RankingCard } from '@/components/ranking-card'
 import { ReviewCard } from '@/components/review-card'
 import { SectionHeading } from '@/components/section-heading'
 import { SiteShell } from '@/components/site-shell'
+import { TrendingList } from '@/components/trending-list'
 import { VideoCard } from '@/components/video-card'
 
 export const metadata: Metadata = {
@@ -131,6 +132,7 @@ export default function TechBlogHomePage() {
                 ))}
               </div>
             </div>
+            <TrendingList articles={articles.filter((article) => article.trending).slice(0, 6)} />
           </aside>
         </div>
       </section>
