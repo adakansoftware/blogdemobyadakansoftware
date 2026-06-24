@@ -56,6 +56,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (!draft) return
 
     if (!draft.title.trim() || !draft.excerpt.trim()) {
       setError('Başlık ve özet zorunludur.')
