@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { ExternalLink } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormField } from '@/components/admin/form-field'
 import { deleteDraft, getDraft, saveDraft, type DraftArticle } from '@/lib/admin-store'
@@ -80,10 +81,24 @@ export default function EditAdminArticlePage({ params }: PageProps) {
   return (
     <>
       <div className="border-b border-border px-8 py-6">
-        <h1 className="font-heading text-3xl font-semibold">Taslağı Düzenle</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Kaydedilmiş yerel taslağı güncelle
-        </p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="font-heading text-3xl font-semibold">Taslağı Düzenle</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Kaydedilmiş yerel taslağı güncelle
+            </p>
+          </div>
+          {draft.slug && (
+            <a
+              href={`/tech-blog/search?q=${encodeURIComponent(draft.title)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-accent transition-opacity hover:opacity-80"
+            >
+              <ExternalLink className="h-3.5 w-3.5" /> Önizle
+            </a>
+          )}
+        </div>
       </div>
 
       <form className="px-8 py-6" onSubmit={handleSubmit}>
@@ -91,7 +106,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
           <div className="space-y-6">
             <div className="rounded-xl border border-border bg-card p-6">
               <div className="space-y-5">
-                <FormField label="Başlık">
+                <FormField label="Başlık" required>
                   <input
                     value={draft.title}
                     onChange={(event) => {
@@ -110,7 +125,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
                     className={inputClassName}
                   />
                 </FormField>
-                <FormField label="Özet">
+                <FormField label="Özet" required>
                   <textarea
                     value={draft.excerpt}
                     onChange={(event) => updateDraft('excerpt', event.target.value)}
