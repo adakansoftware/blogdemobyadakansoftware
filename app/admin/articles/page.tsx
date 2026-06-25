@@ -11,6 +11,7 @@ type TabKey = 'drafts' | 'published'
 export default function AdminArticlesPage() {
   const [activeTab, setActiveTab] = useState<TabKey>('drafts')
   const [drafts, setDrafts] = useState<DraftArticle[]>([])
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     setDrafts(getDrafts())
@@ -22,7 +23,13 @@ export default function AdminArticlesPage() {
     activeTab === 'drafts' ? draft.status === 'draft' : draft.status === 'published',
   )
 
-  const showDraftRows = filteredDrafts.length > 0
+  const visibleDrafts = search.trim()
+    ? filteredDrafts.filter((draft) =>
+        draft.title.toLowerCase().includes(search.toLowerCase()),
+      )
+    : filteredDrafts
+
+  const showDraftRows = visibleDrafts.length > 0
 
   return (
     <>
@@ -44,6 +51,16 @@ export default function AdminArticlesPage() {
       </div>
 
       <div className="px-8 py-6">
+        <div className="mb-4">
+          <input
+            type="search"
+            placeholder="Başlığa göre ara..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            className="w-full max-w-xs rounded-lg border border-border bg-background px-4 py-2 text-sm outline-none focus:border-accent"
+          />
+        </div>
+
         <div className="mb-4 flex gap-2">
           <button
             type="button"
@@ -84,7 +101,7 @@ export default function AdminArticlesPage() {
               </thead>
               <tbody className="divide-y divide-border">
                 {showDraftRows &&
-                  filteredDrafts.map((draft) => {
+                  visibleDrafts.map((draft) => {
                     const category = categories.find((item) => item.slug === draft.categorySlug)
                     const author = authors.find((item) => item.slug === draft.authorSlug)
 
@@ -151,7 +168,7 @@ export default function AdminArticlesPage() {
                     )
                   })}
 
-                {filteredDrafts.length === 0 &&
+                {visibleDrafts.length === 0 &&
                   (activeTab === 'drafts' || recentArticles.length === 0) && (
                     <tr>
                       <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
