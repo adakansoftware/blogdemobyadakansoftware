@@ -22,6 +22,9 @@ export default function AdminArticlesPage() {
   const filteredDrafts = drafts.filter((draft) =>
     activeTab === 'drafts' ? draft.status === 'draft' : draft.status === 'published',
   )
+  const draftTabCount = drafts.filter((draft) => draft.status === 'draft').length
+  const publishedTabCount =
+    drafts.filter((draft) => draft.status === 'published').length + recentArticles.length
 
   const visibleDrafts = search.trim()
     ? filteredDrafts.filter((draft) =>
@@ -71,7 +74,7 @@ export default function AdminArticlesPage() {
             }`}
             onClick={() => setActiveTab('drafts')}
           >
-            Taslaklar
+            Taslaklar {draftTabCount > 0 ? `(${draftTabCount})` : ''}
           </button>
           <button
             type="button"
@@ -82,7 +85,7 @@ export default function AdminArticlesPage() {
             }`}
             onClick={() => setActiveTab('published')}
           >
-            Yayındakiler
+            Yayındakiler ({publishedTabCount})
           </button>
         </div>
 
