@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { FormField } from '@/components/admin/form-field'
+import { clearAllDrafts } from '@/lib/admin-store'
 
 const SETTINGS_KEY = 'technova_admin_settings'
 const inputClassName =
@@ -27,6 +28,7 @@ const defaultSettings: AdminSettings = {
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<AdminSettings>(defaultSettings)
   const [showToast, setShowToast] = useState(false)
+  const [cleared, setCleared] = useState(false)
 
   useEffect(() => {
     try {
@@ -140,6 +142,33 @@ export default function AdminSettingsPage() {
                 className={inputClassName}
               />
             </FormField>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-destructive/30 bg-card p-6">
+          <h2 className="font-heading text-2xl font-semibold text-destructive">
+            Tehlike Bölgesi
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Bu işlemler geri alınamaz. Dikkatli olun.
+          </p>
+          <div className="mt-6">
+            {cleared ? (
+              <p className="text-sm text-muted-foreground">Tüm taslaklar silindi.</p>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  if (window.confirm('Tüm taslakları silmek istediğinizden emin misiniz?')) {
+                    clearAllDrafts()
+                    setCleared(true)
+                  }
+                }}
+                className="rounded-xl border border-destructive px-5 py-3 text-sm font-semibold text-destructive transition-opacity hover:opacity-80"
+              >
+                Tüm Taslakları Temizle
+              </button>
+            )}
           </div>
         </div>
       </div>
