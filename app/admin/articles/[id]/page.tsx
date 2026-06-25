@@ -22,6 +22,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
   const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState('')
   const [showToast, setShowToast] = useState(false)
+  const [lastSaved, setLastSaved] = useState<string | null>(null)
 
   useEffect(() => {
     async function loadDraft() {
@@ -75,6 +76,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
     setDraft(nextDraft)
     setError('')
     setShowToast(true)
+    setLastSaved(new Date().toLocaleTimeString('tr-TR'))
     window.setTimeout(() => setShowToast(false), 3000)
   }
 
@@ -238,6 +240,11 @@ export default function EditAdminArticlePage({ params }: PageProps) {
                   >
                     Kaydet
                   </button>
+                  {lastSaved && (
+                    <p className="text-center text-xs text-muted-foreground">
+                      Son kayıt: {lastSaved}
+                    </p>
+                  )}
                   <button
                     type="button"
                     className="w-full rounded-xl border border-destructive px-5 py-3 text-sm font-semibold text-destructive transition-opacity hover:opacity-80"
