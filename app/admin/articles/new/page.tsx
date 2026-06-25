@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FormField } from '@/components/admin/form-field'
 import { createEmptyDraft, saveDraft } from '@/lib/admin-store'
-import { authors, categories } from '@/lib/data'
+import { authors, categories, slugify } from '@/lib/data'
 import { adminPaths } from '@/lib/routes'
 
 const inputClassName =
@@ -21,18 +21,6 @@ const imageByCategory: Record<string, string> = {
   incelemeler: '/images/laptop.png',
   rehberler: '/images/cpu.png',
   sektor: '/images/cloud.png',
-}
-
-function slugify(input: string): string {
-  return input
-    .toLocaleLowerCase('tr')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/ı/g, 'i').replace(/ç/g, 'c').replace(/ğ/g, 'g')
-    .replace(/ö/g, 'o').replace(/ş/g, 's').replace(/ü/g, 'u')
-    .replace(/[^a-z0-9\s-]/g, '').trim()
-    .replace(/\s+/g, '-')
-    .slice(0, 80)
 }
 
 export default function NewAdminArticlePage() {
