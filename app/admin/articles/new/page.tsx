@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FormField } from '@/components/admin/form-field'
@@ -33,6 +34,7 @@ export default function NewAdminArticlePage() {
   const [authorSlug, setAuthorSlug] = useState(draft.authorSlug)
   const [tags, setTags] = useState('')
   const [readingTime, setReadingTime] = useState(draft.readingTime)
+  const [image, setImage] = useState(imageByCategory[draft.categorySlug] ?? '/images/hero-ai.png')
   const [status, setStatus] = useState<'draft' | 'published'>('draft')
   const [body, setBody] = useState('')
   const [error, setError] = useState('')
@@ -59,7 +61,7 @@ export default function NewAdminArticlePage() {
         .map((tag) => tag.trim())
         .filter(Boolean),
       readingTime: Math.max(1, readingTime),
-      image: imageByCategory[categorySlug] ?? '/images/hero-ai.png',
+      image,
       body: body.trim(),
       status,
       createdAt: now,
@@ -138,7 +140,11 @@ export default function NewAdminArticlePage() {
                 <FormField label="Kategori">
                   <select
                     value={categorySlug}
-                    onChange={(event) => setCategorySlug(event.target.value)}
+                    onChange={(event) => {
+                      const next = event.target.value
+                      setCategorySlug(next)
+                      setImage(imageByCategory[next] ?? '/images/hero-ai.png')
+                    }}
                     className={inputClassName}
                   >
                     {categories.map((category) => (
@@ -177,6 +183,30 @@ export default function NewAdminArticlePage() {
                     onChange={(event) => setReadingTime(Number(event.target.value) || 1)}
                     className={inputClassName}
                   />
+                </FormField>
+                <FormField label="Kapak Görseli">
+                  <select
+                    value={image}
+                    onChange={(event) => setImage(event.target.value)}
+                    className={inputClassName}
+                  >
+                    {Object.entries(imageByCategory).map(([imageSlug, src]) => (
+                      <option key={imageSlug} value={src}>
+                        {imageSlug}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="mt-2 overflow-hidden rounded-lg border border-border">
+                    <div className="relative h-32 w-full">
+                      <Image
+                        src={image}
+                        alt="Kapak önizleme"
+                        fill
+                        sizes="320px"
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
                 </FormField>
                 <FormField label="Durum">
                   <div className="flex gap-4">
