@@ -3,7 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FileText, LayoutDashboard, Menu, Settings, Video, X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getDrafts } from '@/lib/admin-store'
 import { adminPaths } from '@/lib/routes'
 import { cn } from '@/lib/utils'
 
@@ -16,9 +17,11 @@ const navItems = [
 
 function Sidebar({
   pathname,
+  draftCount,
   onNavigate,
 }: {
   pathname: string
+  draftCount: number
   onNavigate?: () => void
 }) {
   return (
@@ -42,7 +45,13 @@ function Sidebar({
                 : 'text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground',
             )}
           >
-            <Icon className="h-4 w-4" /> {label}
+            <Icon className="h-4 w-4" />
+            {label}
+            {label === 'Makaleler' && draftCount > 0 && (
+              <span className="ml-auto rounded-full bg-accent px-1.5 py-0.5 text-[10px] font-bold tabular-nums text-accent-foreground">
+                {draftCount}
+              </span>
+            )}
           </Link>
         ))}
       </nav>
@@ -62,11 +71,16 @@ function Sidebar({
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [draftCount, setDraftCount] = useState(0)
+
+  useEffect(() => {
+    setDraftCount(getDrafts().filter((draft) => draft.status === 'draft').length)
+  }, [pathname])
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       <aside className="hidden md:flex">
-        <Sidebar pathname={pathname} />
+        <Sidebar pathname={pathname} draftCount={draftCount} />
       </aside>
 
       {mobileOpen && (
@@ -78,7 +92,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             onClick={() => setMobileOpen(false)}
           />
           <div className="relative z-10 h-full">
-            <Sidebar pathname={pathname} onNavigate={() => setMobileOpen(false)} />
+            <Sidebar
+              pathname={pathname}
+              draftCount={draftCount}
+              onNavigate={() => setMobileOpen(false)}
+            />
           </div>
         </div>
       )}
