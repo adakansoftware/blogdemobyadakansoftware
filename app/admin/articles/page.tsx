@@ -22,7 +22,7 @@ export default function AdminArticlesPage() {
     activeTab === 'drafts' ? draft.status === 'draft' : draft.status === 'published',
   )
 
-  const showDraftRows = activeTab === 'drafts' || filteredDrafts.length > 0
+  const showDraftRows = filteredDrafts.length > 0
 
   return (
     <>
@@ -151,16 +151,14 @@ export default function AdminArticlesPage() {
                     )
                   })}
 
-                {((activeTab === 'drafts' && filteredDrafts.length === 0) ||
-                  (activeTab === 'published' &&
-                    filteredDrafts.length === 0 &&
-                    recentArticles.length === 0)) && (
-                  <tr>
-                    <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
-                      Gösterilecek içerik bulunamadı.
-                    </td>
-                  </tr>
-                )}
+                {filteredDrafts.length === 0 &&
+                  (activeTab === 'drafts' || recentArticles.length === 0) && (
+                    <tr>
+                      <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
+                        Gösterilecek içerik bulunamadı.
+                      </td>
+                    </tr>
+                  )}
               </tbody>
             </table>
           </div>
