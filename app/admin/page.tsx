@@ -69,12 +69,12 @@ export default function AdminDashboardPage() {
               >
                 Yeni Makale Yaz
               </Link>
-              <Link
-                href={adminPaths.newVideo}
-                className="inline-flex min-h-14 items-center justify-center rounded-xl border border-border bg-background px-5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent"
+              <span
+                title="Yakında geliyor"
+                className="inline-flex min-h-14 cursor-not-allowed items-center justify-center rounded-xl border border-border bg-background px-5 text-sm font-semibold opacity-50"
               >
                 Yeni Video Ekle
-              </Link>
+              </span>
             </div>
           </div>
         </div>
