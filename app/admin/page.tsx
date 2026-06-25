@@ -1,12 +1,12 @@
 import Link from 'next/link'
-import { adminPaths } from '@/lib/routes'
+import { adminPaths, sitePaths } from '@/lib/routes'
 import { articles, authors, categories, formatDate, getCategory, videos } from '@/lib/data'
 
 const stats = [
-  { label: 'Toplam Makale', value: articles.length },
-  { label: 'Toplam Video', value: videos.length },
-  { label: 'Toplam Yazar', value: authors.length },
-  { label: 'Toplam Kategori', value: categories.length },
+  { label: 'Toplam Makale', value: articles.length, href: adminPaths.articles },
+  { label: 'Toplam Video', value: videos.length, href: adminPaths.videos },
+  { label: 'Toplam Yazar', value: authors.length, href: sitePaths.authors },
+  { label: 'Toplam Kategori', value: categories.length, href: sitePaths.home },
 ]
 
 export default function AdminDashboardPage() {
@@ -24,12 +24,16 @@ export default function AdminDashboardPage() {
       <div className="px-8 py-6">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="rounded-xl border border-border bg-card p-6">
+            <Link
+              key={stat.label}
+              href={stat.href}
+              className="rounded-xl border border-border bg-card p-6 transition-colors hover:border-accent"
+            >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                 {stat.label}
               </p>
               <p className="mt-2 font-heading text-4xl font-semibold">{stat.value}</p>
-            </div>
+            </Link>
           ))}
         </div>
 
