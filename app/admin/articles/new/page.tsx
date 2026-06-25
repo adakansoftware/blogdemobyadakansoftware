@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormField } from '@/components/admin/form-field'
 import { createEmptyDraft, saveDraft } from '@/lib/admin-store'
 import { authors, categories, slugify } from '@/lib/data'
@@ -40,6 +40,46 @@ export default function NewAdminArticlePage() {
   const [error, setError] = useState('')
   const [showToast, setShowToast] = useState(false)
 
+  useEffect(() => {
+    if (!title.trim()) return
+
+    const timer = window.setInterval(() => {
+      saveDraft({
+        id: draft.id,
+        slug: slug.trim() || slugify(title),
+        title: title.trim(),
+        excerpt: excerpt.trim(),
+        categorySlug,
+        authorSlug,
+        tags: tags
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+        readingTime: Math.max(1, readingTime),
+        image,
+        body: body.trim(),
+        status,
+        createdAt: draft.createdAt,
+        updatedAt: new Date().toISOString(),
+      })
+    }, 30_000)
+
+    return () => window.clearInterval(timer)
+  }, [
+    title,
+    slug,
+    excerpt,
+    body,
+    categorySlug,
+    authorSlug,
+    tags,
+    readingTime,
+    image,
+    status,
+    draft.id,
+    draft.createdAt,
+  ])
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -64,7 +104,7 @@ export default function NewAdminArticlePage() {
       image,
       body: body.trim(),
       status,
-      createdAt: now,
+      createdAt: draft.createdAt,
       updatedAt: now,
     })
 
@@ -88,7 +128,7 @@ export default function NewAdminArticlePage() {
           <div className="space-y-6">
             <div className="rounded-xl border border-border bg-card p-6">
               <div className="space-y-5">
-                <FormField label="Başlık">
+                <FormField label="Başlık" required>
                   <input
                     value={title}
                     onChange={(event) => {
@@ -107,7 +147,7 @@ export default function NewAdminArticlePage() {
                     className={inputClassName}
                   />
                 </FormField>
-                <FormField label="Özet">
+                <FormField label="Özet" required>
                   <textarea
                     value={excerpt}
                     onChange={(event) => setExcerpt(event.target.value)}
@@ -239,6 +279,9 @@ export default function NewAdminArticlePage() {
                 >
                   Kaydet
                 </button>
+                <p className="text-center text-xs text-muted-foreground">
+                  Her 30 saniyede otomatik kaydedilir
+                </p>
               </div>
             </div>
           </div>
