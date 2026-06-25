@@ -65,3 +65,12 @@ export function createEmptyDraft(): DraftArticle {
     updatedAt: now,
   }
 }
+
+export function getDraftCount(): number {
+  return getDrafts().filter((draft) => draft.status === 'draft').length
+}
+
+export function clearAllDrafts(): void {
+  if (typeof window === 'undefined') return
+  localStorage.removeItem(STORAGE_KEY)
+}
