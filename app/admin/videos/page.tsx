@@ -1,6 +1,4 @@
 import { videos } from '@/lib/data'
-import { adminPaths } from '@/lib/routes'
-
 export default function AdminVideosPage() {
   return (
     <>
@@ -13,14 +11,13 @@ export default function AdminVideosPage() {
             </p>
           </div>
           <div className="inline-flex items-center gap-2">
-            <a
-              href={adminPaths.newVideo}
+            <span
               title="Yakında geliyor"
-              aria-disabled="true"
+              aria-label="Yeni Video - Yakında geliyor"
               className="pointer-events-none inline-flex items-center justify-center rounded-xl border border-border bg-background px-5 py-3 text-sm font-semibold opacity-50"
             >
               Yeni Video
-            </a>
+            </span>
             <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
               Yakında
             </span>
