@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ExternalLink } from 'lucide-react'
@@ -11,6 +12,19 @@ import { adminPaths } from '@/lib/routes'
 
 const inputClassName =
   'w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-accent'
+
+const imageByCategory: Record<string, string> = {
+  teknoloji: '/images/industry.png',
+  'yapay-zeka': '/images/hero-ai.png',
+  donanim: '/images/gpu.png',
+  yazilim: '/images/software.png',
+  mobil: '/images/mobile.png',
+  oyun: '/images/gaming.png',
+  'siber-guvenlik': '/images/security.png',
+  incelemeler: '/images/laptop.png',
+  rehberler: '/images/cpu.png',
+  sektor: '/images/cloud.png',
+}
 
 type PageProps = {
   params: Promise<{ id: string }>
@@ -159,7 +173,11 @@ export default function EditAdminArticlePage({ params }: PageProps) {
                 <FormField label="Kategori">
                   <select
                     value={draft.categorySlug}
-                    onChange={(event) => updateDraft('categorySlug', event.target.value)}
+                    onChange={(event) => {
+                      const next = event.target.value
+                      updateDraft('categorySlug', next)
+                      updateDraft('image', imageByCategory[next] ?? '/images/hero-ai.png')
+                    }}
                     className={inputClassName}
                   >
                     {categories.map((category) => (
@@ -207,6 +225,30 @@ export default function EditAdminArticlePage({ params }: PageProps) {
                     }
                     className={inputClassName}
                   />
+                </FormField>
+                <FormField label="Kapak Görseli">
+                  <select
+                    value={draft.image}
+                    onChange={(event) => updateDraft('image', event.target.value)}
+                    className={inputClassName}
+                  >
+                    {Object.entries(imageByCategory).map(([imageSlug, src]) => (
+                      <option key={imageSlug} value={src}>
+                        {imageSlug}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="mt-2 overflow-hidden rounded-lg border border-border">
+                    <div className="relative h-32 w-full">
+                      <Image
+                        src={draft.image || '/images/hero-ai.png'}
+                        alt="Kapak önizleme"
+                        fill
+                        sizes="320px"
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
                 </FormField>
                 <FormField label="Durum">
                   <div className="flex gap-4">
