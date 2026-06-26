@@ -169,7 +169,7 @@ export function ArticleCard({
         {isHero && (
           <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8 lg:p-10">
             <div className="flex flex-wrap items-center gap-2">
-              <CategoryBadge slug={article.categorySlug} />
+              <CategoryBadge slug={article.categorySlug} interactive={false} />
               {article.trending && (
                 <span className="rounded-sm border border-white/20 bg-white/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-white">
                   Gündem

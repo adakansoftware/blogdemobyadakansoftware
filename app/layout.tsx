@@ -17,6 +17,7 @@ const fraunces = Fraunces({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://technova.example.com'),
   title: 'TechNova Journal — Teknoloji, Yapay Zeka ve Dijital Dünya',
   description:
     'TechNova Journal; yapay zeka, yazılım, donanım, mobil, oyun ve siber güvenlik alanlarında derinlemesine haberler, incelemeler ve rehberler sunan premium teknoloji yayını.',
