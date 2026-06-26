@@ -7,8 +7,8 @@ import { ExternalLink } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormField } from '@/components/admin/form-field'
 import { deleteDraft, getDraft, saveDraft, type DraftArticle } from '@/lib/admin-store'
-import { authors, categories, slugify } from '@/lib/data'
-import { adminPaths } from '@/lib/routes'
+import { articles, authors, categories, slugify } from '@/lib/data'
+import { adminPaths, articlePath } from '@/lib/routes'
 
 const inputClassName =
   'w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-accent'
@@ -66,6 +66,11 @@ export default function EditAdminArticlePage({ params }: PageProps) {
     )
   }
 
+  const liveSlug = articles.find((article) => article.slug === draft.slug)?.slug ?? null
+  const previewHref = liveSlug
+    ? articlePath(liveSlug)
+    : `/tech-blog/search?q=${encodeURIComponent(draft.title)}`
+
   function updateDraft<K extends keyof DraftArticle>(key: K, value: DraftArticle[K]) {
     setDraft((current) => (current ? { ...current, [key]: value } : current))
   }
@@ -106,7 +111,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
           </div>
           {draft.slug && (
             <a
-              href={`/tech-blog/search?q=${encodeURIComponent(draft.title)}`}
+              href={previewHref}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-sm text-accent transition-opacity hover:opacity-80"
