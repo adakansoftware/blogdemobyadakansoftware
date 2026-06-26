@@ -6,7 +6,13 @@ import { useRouter } from 'next/navigation'
 import { ExternalLink } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormField } from '@/components/admin/form-field'
-import { deleteDraft, getDraft, saveDraft, type DraftArticle } from '@/lib/admin-store'
+import {
+  deleteDraft,
+  getDraft,
+  publishDraft,
+  saveDraft,
+  type DraftArticle,
+} from '@/lib/admin-store'
 import { articles, authors, categories, slugify } from '@/lib/data'
 import { adminPaths, articlePath } from '@/lib/routes'
 
@@ -37,6 +43,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
   const [error, setError] = useState('')
   const [showToast, setShowToast] = useState(false)
   const [lastSaved, setLastSaved] = useState<string | null>(null)
+  const [toastMessage, setToastMessage] = useState('Makale kaydedildi!')
 
   useEffect(() => {
     async function loadDraft() {
@@ -94,6 +101,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
     saveDraft(nextDraft)
     setDraft(nextDraft)
     setError('')
+    setToastMessage('Makale kaydedildi!')
     setShowToast(true)
     setLastSaved(new Date().toLocaleTimeString('tr-TR'))
     window.setTimeout(() => setShowToast(false), 3000)
@@ -292,6 +300,21 @@ export default function EditAdminArticlePage({ params }: PageProps) {
                       Son kayıt: {lastSaved}
                     </p>
                   )}
+                  {draft.status === 'draft' && (
+                    <button
+                      type="button"
+                      className="w-full rounded-xl border border-accent px-5 py-3 text-sm font-semibold text-accent transition-opacity hover:opacity-80"
+                      onClick={() => {
+                        publishDraft(draft.id)
+                        updateDraft('status', 'published')
+                        setToastMessage('Makale yayınlandı!')
+                        setShowToast(true)
+                        window.setTimeout(() => setShowToast(false), 3000)
+                      }}
+                    >
+                      Yayınla
+                    </button>
+                  )}
                   <button
                     type="button"
                     className="w-full rounded-xl border border-destructive px-5 py-3 text-sm font-semibold text-destructive transition-opacity hover:opacity-80"
@@ -311,7 +334,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
 
       {showToast && (
         <div className="fixed bottom-4 right-4 rounded-xl border border-border bg-card px-4 py-3 text-sm shadow-lg">
-          Makale kaydedildi!
+          {toastMessage}
         </div>
       )}
     </>
