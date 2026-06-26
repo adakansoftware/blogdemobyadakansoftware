@@ -189,6 +189,23 @@ export default function AdminArticlesPage() {
             </table>
           </div>
         </div>
+
+        {activeTab === 'drafts' &&
+          drafts.filter((draft) => draft.status === 'draft').length === 0 &&
+          !search.trim() && (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <p className="font-heading text-xl font-semibold">Henüz taslak yok</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                İlk makalenizi yazmaya başlayın.
+              </p>
+              <Link
+                href={adminPaths.newArticle}
+                className="mt-6 inline-flex rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition-opacity hover:opacity-90"
+              >
+                Yeni Makale Yaz
+              </Link>
+            </div>
+          )}
       </div>
     </>
   )
