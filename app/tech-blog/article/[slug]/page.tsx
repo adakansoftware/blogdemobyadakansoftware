@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { MessageSquare, Quote, Timer } from 'lucide-react'
 import { notFound } from 'next/navigation'
+import { safeImageSrc, sanitizeHtml } from '@/lib/utils'
 import {
   articleBody,
   articles,
@@ -58,6 +59,7 @@ export default async function ArticleDetailPage({
   const author = getAuthor(article.authorSlug)
   const related = relatedArticles(article, 4)
   const body = articleBody(article)
+  const safeBodyHtml = sanitizeHtml(body.html)
 
   return (
     <SiteShell>
@@ -95,7 +97,7 @@ export default async function ArticleDetailPage({
             <div className="overflow-hidden rounded-2xl border border-border">
               <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
                 <Image
-                  src={article.image}
+                  src={safeImageSrc(article.image)}
                   alt={article.title}
                   fill
                   priority
@@ -143,7 +145,7 @@ export default async function ArticleDetailPage({
               <article>
                 <div
                   className="article-body"
-                  dangerouslySetInnerHTML={{ __html: body.html }}
+                  dangerouslySetInnerHTML={{ __html: safeBodyHtml }}
                 />
                 <blockquote className="mt-10 rounded-2xl border-l-4 border-accent bg-muted/40 px-6 py-5">
                   <div className="flex items-start gap-3">

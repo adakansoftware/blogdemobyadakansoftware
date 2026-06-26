@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { categories } from '@/lib/data'
 import { categoryPath, sitePaths } from '@/lib/routes'
+import { safeExternalHref } from '@/lib/utils'
 
 const sections = [
   {
@@ -63,7 +64,7 @@ export function SiteFooter() {
               {socials.map((social) => (
                 <a
                   key={social.label}
-                  href={social.href}
+                  href={safeExternalHref(social.href)}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
@@ -101,7 +102,7 @@ export function SiteFooter() {
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
           <p>© 2026 TechNova Journal. Tüm hakları saklıdır.</p>
           <a
-            href="https://instagram.com/adakansoftware"
+            href={safeExternalHref('https://instagram.com/adakansoftware')}
             target="_blank"
             rel="noopener noreferrer"
             className="transition-colors hover:text-accent"

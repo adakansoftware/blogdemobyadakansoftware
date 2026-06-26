@@ -5,6 +5,7 @@ import { ArticleCard } from '@/components/article-card'
 import { AuthorAvatar } from '@/components/author-avatar'
 import { SectionHeading } from '@/components/section-heading'
 import { SiteShell } from '@/components/site-shell'
+import { safeExternalHref } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Yazarlar | TechNova Journal',
@@ -68,7 +69,7 @@ export default function AuthorsPage() {
                 </div>
                 <div className="mt-6 flex flex-wrap gap-4 text-sm text-muted-foreground">
                   <a
-                    href={`https://x.com/${author.twitter.replace('@', '')}`}
+                    href={safeExternalHref(`https://x.com/${author.twitter.replace('@', '')}`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 transition-colors hover:text-accent"
@@ -76,7 +77,7 @@ export default function AuthorsPage() {
                     X {author.twitter}
                   </a>
                   <a
-                    href={`https://linkedin.com/in/${author.linkedin}`}
+                    href={safeExternalHref(`https://linkedin.com/in/${author.linkedin}`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 transition-colors hover:text-accent"

@@ -7,6 +7,7 @@ import { FormField } from '@/components/admin/form-field'
 import { createEmptyDraft, saveDraft } from '@/lib/admin-store'
 import { authors, categories, slugify } from '@/lib/data'
 import { adminPaths } from '@/lib/routes'
+import { safeImageSrc } from '@/lib/utils'
 
 const inputClassName =
   'w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-accent'
@@ -264,7 +265,7 @@ export default function NewAdminArticlePage() {
                   <div className="mt-2 overflow-hidden rounded-lg border border-border">
                     <div className="relative h-32 w-full">
                       <Image
-                        src={image}
+                        src={safeImageSrc(image)}
                         alt="Kapak önizleme"
                         fill
                         sizes="320px"

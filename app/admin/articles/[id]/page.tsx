@@ -15,6 +15,7 @@ import {
 } from '@/lib/admin-store'
 import { articles, authors, categories, slugify } from '@/lib/data'
 import { adminPaths, articlePath } from '@/lib/routes'
+import { safeImageSrc } from '@/lib/utils'
 
 const inputClassName =
   'w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-accent'
@@ -260,7 +261,7 @@ export default function EditAdminArticlePage({ params }: PageProps) {
                   <div className="mt-2 overflow-hidden rounded-lg border border-border">
                     <div className="relative h-32 w-full">
                       <Image
-                        src={draft.image || '/images/hero-ai.png'}
+                        src={safeImageSrc(draft.image || '/images/hero-ai.png')}
                         alt="Kapak önizleme"
                         fill
                         sizes="320px"
