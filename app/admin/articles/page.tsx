@@ -136,6 +136,7 @@ export default function AdminArticlesPage() {
                               type="button"
                               className="text-sm text-destructive transition-opacity hover:opacity-80"
                               onClick={() => {
+                                if (!window.confirm(`"${draft.title || 'Bu taslak'}" silinsin mi? Bu işlem geri alınamaz.`)) return
                                 deleteDraft(draft.id)
                                 setDrafts(getDrafts())
                               }}
