@@ -129,8 +129,8 @@ export default function NewAdminArticlePage() {
 
     setError('')
     setShowToast(true)
+    router.push(adminPaths.articles)
     window.setTimeout(() => setShowToast(false), 3000)
-    window.setTimeout(() => router.push(adminPaths.articles), 700)
   }
 
   return (
