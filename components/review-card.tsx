@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Star } from 'lucide-react'
 import { type Article, getCategory } from '@/lib/data'
 import { articlePath } from '@/lib/routes'
+import { safeImageSrc } from '@/lib/utils'
 
 function ScoreBadge({ score }: { score: number }) {
   const tone =
@@ -24,6 +25,7 @@ function ScoreBadge({ score }: { score: number }) {
 export function ReviewCard({ article }: { article: Article }) {
   const category = getCategory(article.categorySlug)
   const score = article.review?.score ?? 8
+  const imageSrc = safeImageSrc(article.image || '/placeholder.svg', '/placeholder.svg')
 
   return (
     <Link
@@ -32,7 +34,7 @@ export function ReviewCard({ article }: { article: Article }) {
     >
       <div className="relative aspect-square w-24 shrink-0 overflow-hidden rounded-md sm:w-28">
         <Image
-          src={article.image || '/placeholder.svg'}
+          src={imageSrc}
           alt={article.title}
           fill
           sizes="120px"

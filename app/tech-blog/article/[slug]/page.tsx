@@ -40,7 +40,7 @@ export async function generateMetadata({
     openGraph: {
       title: article.title,
       description: article.excerpt,
-      images: [{ url: article.image }],
+      images: [{ url: safeImageSrc(article.image) }],
       type: 'article',
       publishedTime: article.date,
     },

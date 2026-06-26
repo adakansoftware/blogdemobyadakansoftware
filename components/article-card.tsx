@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Clock, MessageSquare, TrendingUp } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, safeImageSrc } from '@/lib/utils'
 import {
   type Article,
   formatDate,
@@ -35,6 +35,7 @@ export function ArticleCard({
 }) {
   const author = getAuthor(article.authorSlug)
   const href = articlePath(article.slug)
+  const imageSrc = safeImageSrc(article.image || '/placeholder.svg', '/placeholder.svg')
 
   if (variant === 'minimal') {
     return (
@@ -62,7 +63,7 @@ export function ArticleCard({
           className="relative aspect-[4/3] w-28 shrink-0 overflow-hidden rounded-md bg-muted sm:w-36"
         >
           <Image
-            src={article.image || '/placeholder.svg'}
+            src={imageSrc}
             alt={article.title}
             aria-hidden={true}
             fill
@@ -111,7 +112,7 @@ export function ArticleCard({
           className="relative mb-3 aspect-[16/10] overflow-hidden rounded-lg bg-muted"
         >
           <Image
-            src={article.image || '/placeholder.svg'}
+            src={imageSrc}
             alt={article.title}
             aria-hidden={true}
             fill
@@ -153,7 +154,7 @@ export function ArticleCard({
         )}
       >
         <Image
-          src={article.image || '/placeholder.svg'}
+          src={imageSrc}
           alt={article.title}
           aria-hidden={!isHero ? true : undefined}
           fill

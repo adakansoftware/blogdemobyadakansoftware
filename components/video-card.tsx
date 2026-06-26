@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Eye, Play } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, safeImageSrc } from '@/lib/utils'
 import { formatDate, type Video } from '@/lib/data'
 import { videoPath } from '@/lib/routes'
 
@@ -12,6 +12,8 @@ export function VideoCard({
   video: Video
   featured?: boolean
 }) {
+  const imageSrc = safeImageSrc(video.image || '/placeholder.svg', '/placeholder.svg')
+
   return (
     <Link
       href={videoPath(video.slug)}
@@ -19,7 +21,7 @@ export function VideoCard({
     >
       <div className="relative aspect-video overflow-hidden">
         <Image
-          src={video.image || '/placeholder.svg'}
+          src={imageSrc}
           alt={video.title}
           fill
           sizes={featured ? '(max-width: 768px) 100vw, 60vw' : '(max-width: 768px) 100vw, 30vw'}
