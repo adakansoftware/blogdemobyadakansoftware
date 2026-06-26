@@ -1,16 +1,28 @@
+'use client'
+
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { getDrafts } from '@/lib/admin-store'
 import { adminPaths, sitePaths } from '@/lib/routes'
 import { articles, authors, categories, formatDate, getCategory, videos } from '@/lib/data'
 
-const stats = [
-  { label: 'Toplam Makale', value: articles.length, href: adminPaths.articles },
-  { label: 'Toplam Video', value: videos.length, href: adminPaths.videos },
-  { label: 'Toplam Yazar', value: authors.length, href: sitePaths.authors },
-  { label: 'Toplam Kategori', value: categories.length, href: sitePaths.home },
-]
-
 export default function AdminDashboardPage() {
+  const [draftCount, setDraftCount] = useState(0)
   const latestArticles = [...articles].slice(0, 5)
+  const stats = [
+    {
+      label: 'Toplam Makale',
+      value: `${articles.length} + ${draftCount} taslak`,
+      href: adminPaths.articles,
+    },
+    { label: 'Toplam Video', value: videos.length, href: adminPaths.videos },
+    { label: 'Toplam Yazar', value: authors.length, href: sitePaths.authors },
+    { label: 'Toplam Kategori', value: categories.length, href: sitePaths.home },
+  ]
+
+  useEffect(() => {
+    setDraftCount(getDrafts().length)
+  }, [])
 
   return (
     <>
