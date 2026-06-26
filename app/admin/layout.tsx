@@ -33,27 +33,33 @@ function Sidebar({
         </span>
       </div>
       <nav className="flex-1 space-y-1 p-3">
-        {navItems.map(({ label, href, icon: Icon }) => (
-          <Link
-            key={href}
-            href={href}
-            onClick={onNavigate}
-            className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-              href === '/admin' ? pathname === href : pathname.startsWith(href)
-                ? 'bg-accent text-accent-foreground'
-                : 'text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground',
-            )}
-          >
-            <Icon className="h-4 w-4" />
-            {label}
-            {label === 'Makaleler' && draftCount > 0 && (
-              <span className="ml-auto rounded-full bg-accent px-1.5 py-0.5 text-[10px] font-bold tabular-nums text-accent-foreground">
-                {draftCount}
-              </span>
-            )}
-          </Link>
-        ))}
+        {navItems.map(({ label, href, icon: Icon }) => {
+          const isActive = href === adminPaths.home
+            ? pathname === href
+            : pathname.startsWith(href)
+
+          return (
+            <Link
+              key={href}
+              href={href}
+              onClick={onNavigate}
+              className={cn(
+                'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                isActive
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground',
+              )}
+            >
+              <Icon className="h-4 w-4" />
+              {label}
+              {label === 'Makaleler' && draftCount > 0 && (
+                <span className="ml-auto rounded-full bg-accent px-1.5 py-0.5 text-[10px] font-bold tabular-nums text-accent-foreground">
+                  {draftCount}
+                </span>
+              )}
+            </Link>
+          )
+        })}
       </nav>
       <div className="border-t border-primary-foreground/10 p-3">
         <Link
