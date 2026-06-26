@@ -83,6 +83,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setDraftCount(getDrafts().filter((draft) => draft.status === 'draft').length)
   }, [pathname])
 
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape' && mobileOpen) setMobileOpen(false)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [mobileOpen])
+
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       <aside className="hidden md:flex">
