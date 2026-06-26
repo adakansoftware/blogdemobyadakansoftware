@@ -1,4 +1,11 @@
-import { videos } from '@/lib/data'
+import { formatViews, videos } from '@/lib/data'
+
+function parseViewCount(value: string): number {
+  if (value.endsWith('M')) return Number.parseFloat(value) * 1_000_000
+  if (value.endsWith('B')) return Number.parseFloat(value) * 1_000
+  return Number.parseInt(value, 10)
+}
+
 export default function AdminVideosPage() {
   return (
     <>
@@ -44,7 +51,7 @@ export default function AdminVideosPage() {
                     <td className="py-3 pl-4 pr-4">{video.title}</td>
                     <td className="py-3 pr-4">{video.category}</td>
                     <td className="py-3 pr-4">{video.duration}</td>
-                    <td className="py-3 pr-4">{video.views}</td>
+                    <td className="py-3 pr-4">{formatViews(parseViewCount(video.views))}</td>
                     <td className="py-3 pr-4">{video.publishedAt.slice(0, 10)}</td>
                   </tr>
                 ))}
