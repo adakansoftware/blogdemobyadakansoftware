@@ -179,17 +179,20 @@ export default function NewAdminArticlePage() {
             </div>
 
             <div className="rounded-xl border border-border bg-card p-6">
-              <FormField
-                label="İçerik"
-                hint="HTML desteklenir: <h2>, <p>, <ul>, <li>"
-              >
-                <textarea
-                  value={body}
-                  onChange={(event) => setBody(event.target.value)}
-                  className={`${inputClassName} min-h-[300px] font-mono`}
-                  placeholder={`<h2>Giriş</h2>\n<p>Makale içeriğini buraya yazın.</p>\n<ul>\n  <li>Önemli nokta</li>\n</ul>`}
-                />
-              </FormField>
+                <FormField
+                  label="İçerik"
+                  hint="HTML desteklenir: <h2>, <p>, <ul>, <li>"
+                >
+                  <textarea
+                    value={body}
+                    onChange={(event) => setBody(event.target.value)}
+                    className={`${inputClassName} min-h-[300px] font-mono`}
+                    placeholder={`<h2>Giriş</h2>\n<p>Makale içeriğini buraya yazın.</p>\n<ul>\n  <li>Önemli nokta</li>\n</ul>`}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {body.trim() ? body.trim().split(/\s+/).length : 0} kelime
+                  </p>
+                </FormField>
             </div>
           </div>
 
