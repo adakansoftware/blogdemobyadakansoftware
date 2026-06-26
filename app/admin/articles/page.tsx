@@ -31,6 +31,11 @@ export default function AdminArticlesPage() {
         draft.title.toLowerCase().includes(search.toLowerCase()),
       )
     : filteredDrafts
+  const visibleRecent = search.trim()
+    ? recentArticles.filter((article) =>
+        article.title.toLowerCase().includes(search.toLowerCase()),
+      )
+    : recentArticles
 
   const showDraftRows = visibleDrafts.length > 0
 
@@ -144,7 +149,7 @@ export default function AdminArticlesPage() {
                   })}
 
                 {activeTab === 'published' &&
-                  recentArticles.map((article) => {
+                  visibleRecent.map((article) => {
                     const category = categories.find((item) => item.slug === article.categorySlug)
                     const author = authors.find((item) => item.slug === article.authorSlug)
 
@@ -172,7 +177,7 @@ export default function AdminArticlesPage() {
                   })}
 
                 {visibleDrafts.length === 0 &&
-                  (activeTab === 'drafts' || recentArticles.length === 0) && (
+                  (activeTab === 'drafts' || visibleRecent.length === 0) && (
                     <tr>
                       <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
                         Gösterilecek içerik bulunamadı.
