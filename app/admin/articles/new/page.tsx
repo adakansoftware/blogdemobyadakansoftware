@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FormField } from '@/components/admin/form-field'
 import { createEmptyDraft, saveDraft } from '@/lib/admin-store'
 import { authors, categories, slugify } from '@/lib/data'
@@ -39,33 +39,7 @@ export default function NewAdminArticlePage() {
   const [body, setBody] = useState('')
   const [error, setError] = useState('')
   const [showToast, setShowToast] = useState(false)
-
-  useEffect(() => {
-    if (!title.trim()) return
-
-    const timer = window.setInterval(() => {
-      saveDraft({
-        id: draft.id,
-        slug: slug.trim() || slugify(title),
-        title: title.trim(),
-        excerpt: excerpt.trim(),
-        categorySlug,
-        authorSlug,
-        tags: tags
-          .split(',')
-          .map((tag) => tag.trim())
-          .filter(Boolean),
-        readingTime: Math.max(1, readingTime),
-        image,
-        body: body.trim(),
-        status,
-        createdAt: draft.createdAt,
-        updatedAt: new Date().toISOString(),
-      })
-    }, 30_000)
-
-    return () => window.clearInterval(timer)
-  }, [
+  const formRef = useRef({
     title,
     slug,
     excerpt,
@@ -76,9 +50,54 @@ export default function NewAdminArticlePage() {
     readingTime,
     image,
     status,
-    draft.id,
-    draft.createdAt,
-  ])
+    draftId: draft.id,
+    draftCreatedAt: draft.createdAt,
+  })
+
+  useEffect(() => {
+    formRef.current = {
+      title,
+      slug,
+      excerpt,
+      body,
+      categorySlug,
+      authorSlug,
+      tags,
+      readingTime,
+      image,
+      status,
+      draftId: draft.id,
+      draftCreatedAt: draft.createdAt,
+    }
+  })
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      const form = formRef.current
+      if (!form.title.trim()) return
+
+      saveDraft({
+        id: form.draftId,
+        slug: form.slug.trim() || slugify(form.title),
+        title: form.title.trim(),
+        excerpt: form.excerpt.trim(),
+        categorySlug: form.categorySlug,
+        authorSlug: form.authorSlug,
+        tags: form.tags
+          .split(',')
+          .map((tag: string) => tag.trim())
+          .filter(Boolean),
+        readingTime: Math.max(1, form.readingTime),
+        image: form.image,
+        body: form.body.trim(),
+        status: form.status,
+        createdAt: form.draftCreatedAt,
+        updatedAt: new Date().toISOString(),
+      })
+    }, 30_000)
+
+    return () => window.clearInterval(timer)
+  }, [])
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
