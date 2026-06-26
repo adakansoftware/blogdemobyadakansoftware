@@ -74,3 +74,16 @@ export function clearAllDrafts(): void {
   if (typeof window === 'undefined') return
   localStorage.removeItem(STORAGE_KEY)
 }
+
+export function publishDraft(id: string): void {
+  const drafts = getDrafts()
+  const index = drafts.findIndex((draft) => draft.id === id)
+  if (index < 0) return
+  drafts[index] = {
+    ...drafts[index],
+    status: 'published',
+    updatedAt: new Date().toISOString(),
+  }
+  if (typeof window === 'undefined') return
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts))
+}
