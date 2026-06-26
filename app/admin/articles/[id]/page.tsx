@@ -162,6 +162,9 @@ export default function EditAdminArticlePage({ params }: PageProps) {
                     className={inputClassName}
                     required
                   />
+                  <p className={`text-xs ${draft.excerpt.length > 160 ? 'text-destructive' : 'text-muted-foreground'}`}>
+                    {draft.excerpt.length} / 160 karakter
+                  </p>
                 </FormField>
               </div>
             </div>
@@ -176,6 +179,9 @@ export default function EditAdminArticlePage({ params }: PageProps) {
                   onChange={(event) => updateDraft('body', event.target.value)}
                   className={`${inputClassName} min-h-[300px] font-mono`}
                 />
+                <p className="text-xs text-muted-foreground">
+                  {draft.body.trim() ? draft.body.trim().split(/\s+/).length : 0} kelime
+                </p>
               </FormField>
             </div>
           </div>
