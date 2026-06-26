@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { getDrafts } from '@/lib/admin-store'
+import { getDrafts, type DraftArticle } from '@/lib/admin-store'
 import { adminPaths, sitePaths } from '@/lib/routes'
 import { articles, authors, categories, formatDate, getCategory, videos } from '@/lib/data'
 
 export default function AdminDashboardPage() {
   const [draftCount, setDraftCount] = useState(0)
+  const [drafts, setDrafts] = useState<DraftArticle[]>([])
   const latestArticles = [...articles].slice(0, 5)
   const stats = [
     {
@@ -22,6 +23,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     setDraftCount(getDrafts().length)
+    setDrafts(getDrafts().slice(0, 3))
   }, [])
 
   return (
@@ -53,6 +55,23 @@ export default function AdminDashboardPage() {
           <div className="rounded-xl border border-border bg-card p-6">
             <h2 className="font-heading text-2xl font-semibold">Son Makaleler</h2>
             <div className="mt-6 space-y-4">
+              {drafts.map((draft) => (
+                <div
+                  key={draft.id}
+                  className="flex flex-col gap-3 rounded-xl border border-border p-4 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="min-w-0">
+                    <p className="font-medium">{draft.title || 'İsimsiz Taslak'}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {formatDate(draft.updatedAt)}
+                    </p>
+                  </div>
+                  <span className="inline-flex rounded-full border border-accent/40 px-3 py-1 text-xs text-accent">
+                    Taslak
+                  </span>
+                </div>
+              ))}
+
               {latestArticles.map((article) => {
                 const category = getCategory(article.categorySlug)
 
