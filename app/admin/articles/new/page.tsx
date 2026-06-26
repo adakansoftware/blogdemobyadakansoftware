@@ -174,6 +174,9 @@ export default function NewAdminArticlePage() {
                     className={inputClassName}
                     required
                   />
+                  <p className={`text-xs ${excerpt.length > 160 ? 'text-destructive' : 'text-muted-foreground'}`}>
+                    {excerpt.length} / 160 karakter
+                  </p>
                 </FormField>
               </div>
             </div>
